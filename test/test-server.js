@@ -39,4 +39,15 @@ describe('Testing', function () {
             })
         })
     })
+
+    describe('/inventory', function () {
+        it('should return inventory.html', function () {
+            return chai.request(app)
+            .get('/inventory')
+            .then(function (res) {
+                res.should.have.status(200);
+                res.should.be.html;
+            })
+        })
+    })
 })

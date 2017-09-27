@@ -10,6 +10,12 @@ app.get('/', (req, res) => {
 app.get('/home', (req, res) => {
     res.sendFile(__dirname + '/public/views/home.html')
 })
+
+app.get('/inventory', (req, res) => {
+    res.sendFile(__dirname + '/public/views/inventory.html')
+})
+
+
 let server;
 
 function runServer() {
