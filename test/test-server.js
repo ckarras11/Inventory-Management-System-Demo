@@ -24,6 +24,18 @@ describe('Testing', function () {
             .get('/')
             .then(function (res) {
                 res.should.have.status(200);
+                res.should.be.html;
+            })
+        })
+    })
+
+    describe('/home', function () {
+        it('should return home.html', function () {
+            return chai.request(app)
+            .get('/home')
+            .then(function (res) {
+                res.should.have.status(200);
+                res.should.be.html;
             })
         })
     })
