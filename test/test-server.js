@@ -50,4 +50,15 @@ describe('Testing', function () {
             })
         })
     })
+
+    describe('/reports', function () {
+        it('should return reports.html', function () {
+            return chai.request(app)
+            .get('/reports')
+            .then(function (res) {
+                res.should.have.status(200);
+                res.should.be.html;
+            })
+        })
+    })
 })

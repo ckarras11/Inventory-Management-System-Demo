@@ -15,6 +15,9 @@ app.get('/inventory', (req, res) => {
     res.sendFile(__dirname + '/public/views/inventory.html')
 })
 
+app.get('/reports', (req, res) => {
+    res.sendFile(__dirname + '/public/views/reports.html')
+})
 
 let server;
 
