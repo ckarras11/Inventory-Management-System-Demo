@@ -4,6 +4,7 @@ const MOCK_INVENTORY = {
     inventory: [
         {
             id: "111111",
+            image: "https://i5.walmartimages.com/asr/9a4a04d7-3059-49b1-a4fa-f5d78f43ebf2_1.c8301f7929be8b305ae0804e5ac298b0.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF",
             item: "Rotella 15w40",
             partNumber: "oil",
             listPrice: 25.99,
@@ -60,16 +61,17 @@ function getInventoryItems(callbackfn) {
 function displayInventoryItems(data) {
     for (index in data.inventory){
         $('#results').append(`<div class="item">
-                                    <div class="picture>
+                                    <div class="picture">
+                                        <img src="${data.inventory[index].image}" alt="">
                                     </div>
-                                    <div class="itemName">
+                                    <div class="iteminfo">
                                         <p>${data.inventory[index].item}</p>
                                     </div>
-                                    <div class="quantity">
+                                    <div class="iteminfo">
                                         <p>$${data.inventory[index].listPrice}</p>
                                     </div> 
-                                    <div class="quantity">
-                                        <p>${data.inventory[index].quantityOnHand}</p>
+                                    <div class="iteminfo">
+                                        <p>Quantity: ${data.inventory[index].quantityOnHand}</p>
                                     </div> 
                                 <div>`)
     }
