@@ -40,7 +40,7 @@ const MOCK_INVENTORY = {
             item: "Oil Sample Kit",
             partNumber: "oilkit",
             listPrice: 50,
-            quantityOnHand: 10,
+            quantityOnHand: 3,
             reorderPoint: 5
         },
         {
@@ -48,15 +48,15 @@ const MOCK_INVENTORY = {
             item: "AFC 710",
             partNumber: "afc710",
             listPrice: 30,
-            quantityOnHand: 10,
+            quantityOnHand: 2,
             reorderPoint: 4
         }
     ]
-}
+};
 
 function getInventoryItems(callbackfn) {
     setTimeout(function () { callbackfn(MOCK_INVENTORY) }, 100);
-}
+};
 
 function displayInventoryItems(data) {
     for (index in data.inventory){
@@ -73,19 +73,43 @@ function displayInventoryItems(data) {
                                     <div class="iteminfo">
                                         <p>Quantity: ${data.inventory[index].quantityOnHand}</p>
                                     </div> 
-                                <div>`)
-    }
-}
+                                <div>`);
+    };
+};
 
 function getAndDisplayInventoryItems() {
-    getInventoryItems(displayInventoryItems)
-}
+    getInventoryItems(displayInventoryItems);
+};
 
 /*$(function() {
     getAndDisplayInventoryItems()
 })*/
 
-$('li').on('click', function() {
-    console.log(this)
-    getAndDisplayInventoryItems()
+//Selects which vehicle to get inventory on
+
+$('.vehicle').on('click', function() {
+    console.log(this);
+    $('.vehicle').addClass('js-hide-display');
+    $('#add-item').removeClass('js-hide-display');
+    $('#add-vehicle').addClass('js-hide-display');
+    getAndDisplayInventoryItems();
+});
+
+//Gets all items below reorder point and displays them as a <ul>
+
+function reorderReport (data) {
+    for (index in data.inventory) {
+        if (data.inventory[index].quantityOnHand < data.inventory[index].reorderPoint) {
+            $('#reorder-list').append(`<li>${data.inventory[index].item}: ${data.inventory[index].quantityOnHand}</li>`);
+        };
+    };
+};
+
+//Event handler for report selection
+
+$('#reorder').click(function () {
+    $('.report').addClass('js-hide-display');
+    getInventoryItems(reorderReport);
+    //reorderReport();
+
 })
