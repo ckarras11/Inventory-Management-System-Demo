@@ -233,8 +233,18 @@ td, th {
   -ms-flex-line-pack: start;
   align-content: flex-start; }
 
+.welcome {
+  margin: 0 auto; }
+
+.instructions {
+  text-indent: 50px;
+  padding: 5px; }
+
 .copyright {
   text-align: center; }
+
+.js-hide-display {
+  display: none; }
 
 .logo {
   text-align: center;
@@ -305,6 +315,12 @@ td, th {
 .forgot {
   text-align: center; }
 
+.vehicle {
+  cursor: pointer; }
+
+.vehicle:hover {
+  background-color: #dadee5; }
+
 @media (min-width: 775px) {
   .item {
     border: solid black 1px;
@@ -339,3 +355,23 @@ td, th {
 .iteminfo p {
   margin-top: 5px;
   margin-bottom: 5px; }
+
+.report {
+  cursor: pointer; }
+
+.report:hover {
+  background-color: #dadee5; }
+
+.reorder-list {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  list-style: none; }
+  .reorder-list li {
+    margin: 10px; }
