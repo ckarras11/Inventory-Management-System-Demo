@@ -54,12 +54,19 @@ const MOCK_INVENTORY = {
     ]
 };
 
+$(function handleStart (document) {
+    selectVehicle();
+    runReport();
+    addItem();
+    addVehicle();
+});
+
 function getInventoryItems(callbackfn) {
     setTimeout(function () { callbackfn(MOCK_INVENTORY) }, 100);
 };
 
 function displayInventoryItems(data) {
-    for (index in data.inventory){
+    for (index in data.inventory) {
         $('#results').append(`<div class="item">
                                     <div class="picture">
                                         <img src="${data.inventory[index].image}" alt="">
@@ -86,18 +93,19 @@ function getAndDisplayInventoryItems() {
 })*/
 
 //Selects which vehicle to get inventory on
-
-$('.vehicle').on('click', function() {
-    console.log(this);
-    $('.vehicle').addClass('js-hide-display');
-    $('#add-item').removeClass('js-hide-display');
-    $('#add-vehicle').addClass('js-hide-display');
-    getAndDisplayInventoryItems();
-});
+function selectVehicle () {
+    $('#results').on('click', '.vehicle', function () {
+        console.log(this);
+        $('.vehicle').addClass('js-hide-display');
+        $('#add-item').removeClass('js-hide-display');
+        $('#add-vehicle').addClass('js-hide-display');
+        getAndDisplayInventoryItems();
+    });
+};
 
 //Gets all items below reorder point and displays them as a <ul>
 
-function reorderReport (data) {
+function reorderReport(data) {
     for (index in data.inventory) {
         if (data.inventory[index].quantityOnHand < data.inventory[index].reorderPoint) {
             $('#reorder-list').append(`<li>${data.inventory[index].item}: ${data.inventory[index].quantityOnHand}</li>`);
@@ -106,10 +114,36 @@ function reorderReport (data) {
 };
 
 //Event handler for report selection
+function runReport () {
+    $('#reorder').click(function () {
+        $('.report').addClass('js-hide-display');
+        getInventoryItems(reorderReport);
+    });
+};
 
-$('#reorder').click(function () {
-    $('.report').addClass('js-hide-display');
-    getInventoryItems(reorderReport);
-    //reorderReport();
+function addVehicle () {
+    $('#add-vehicle').click(function () {
+        $('#results').append(`<div class="item vehicle">
+                                <p>Another Vehicle</p>
+                            </div>`);
+    });
+};
 
-})
+function addItem() {
+    $('#add-item').click(function () {
+        $('#results').append(`<div class="item">
+                                <div class="picture">
+                                    <img src="" alt="">
+                                </div>
+                                <div class="iteminfo">
+                                    <p>Another Item</p>
+                                </div>
+                                <div class="iteminfo">
+                                    <p>$Price</p>
+                                </div> 
+                                <div class="iteminfo">
+                                    <p>Quantity:</p>
+                                </div> 
+                            <div>`);
+    });
+};

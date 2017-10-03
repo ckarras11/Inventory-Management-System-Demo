@@ -356,6 +356,12 @@ td, th {
   margin-top: 5px;
   margin-bottom: 5px; }
 
+.add {
+  cursor: pointer; }
+
+.add:hover {
+  background-color: #dadee5; }
+
 .report {
   cursor: pointer; }
 
