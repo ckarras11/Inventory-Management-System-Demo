@@ -35,9 +35,21 @@
             </div>
         </div>
     </section>
-    <section role="region" class="addNewVehicle" id="addNewVehicle">
-    
-    </section>
+    <div class="addNewVehicle-modal" id="addNewVehicle-modal">
+        <div class="modal-content">
+            <span class="close" id="close">&times;</span>
+            <form action="" method="">
+                <fieldset class="vehicle-form" id="vehicle-form">
+                    <legend>Add New Vehicle</legend>
+                    <label for="vehicle-image">Image</label>
+                    <input type="file" name="vehicle-mage" id="vehicle-image">
+                    <label for="vehicle-name">Vehicle Name</label>
+                    <input type="text" placeholder="Van 01" id="vehicle-input" class="vehicle-input">
+                    <input type="submit" value="Submit" id="submit">
+                </fieldset>
+            </form>
+        </div>
+    </div>
     
     <footer role="contentinfo" class="copyright">
         <p>Copyright 2017&#169;</p>

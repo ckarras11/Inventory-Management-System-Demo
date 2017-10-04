@@ -54,7 +54,7 @@ const MOCK_INVENTORY = {
     ]
 };
 
-$(function handleStart (document) {
+$(function handleStart(document) {
     selectVehicle();
     runReport();
     addItem();
@@ -93,7 +93,7 @@ function getAndDisplayInventoryItems() {
 })*/
 
 //Selects which vehicle to get inventory on
-function selectVehicle () {
+function selectVehicle() {
     $('#results').on('click', '.vehicle', function () {
         console.log(this);
         $('.vehicle').addClass('js-hide-display');
@@ -114,20 +114,38 @@ function reorderReport(data) {
 };
 
 //Event handler for report selection
-function runReport () {
+function runReport() {
     $('#reorder').click(function () {
         $('.report').addClass('js-hide-display');
         getInventoryItems(reorderReport);
     });
 };
 
-function addVehicle () {
+function addVehicle() {
     $('#add-vehicle').click(function () {
-        $('#results').append(`<div class="item vehicle">
-                                <p>Another Vehicle</p>
-                            </div>`);
+
+        let modal = document.getElementById('addNewVehicle-modal');
+        modal.style.display = "block";
+
+        $('#vehicle-form').on('click', '#submit', function (event) {
+            event.preventDefault();
+            $('#results').append(`<div class="item vehicle">
+                                    <div class="picture">
+                                        <img src="" alt="">
+                                    </div>
+                                    <div class="iteminfo">
+                                        <p>${$('#vehicle-input').val()}</p>
+                                    </div>
+                                  </div>`);
+            modal.style.display = 'none';
+        });
+
+        $('#close').click(function () {
+            modal.style.display = 'none';
+        });
     });
 };
+
 
 function addItem() {
     $('#add-item').click(function () {
@@ -147,3 +165,4 @@ function addItem() {
                             <div>`);
     });
 };
+

@@ -362,6 +362,55 @@ td, th {
 .add:hover {
   background-color: #dadee5; }
 
+.addNewVehicle-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: solid black 1px;
+  border-radius: 5px;
+  width: 80%; }
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold; }
+
+.close:hover {
+  cursor: pointer;
+  color: black;
+  text-decoration: none; }
+
+.vehicle-form {
+  height: 200px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: solid black 1px; }
+  .vehicle-form legend {
+    text-align: center;
+    margin: 20px; }
+  .vehicle-form label {
+    margin-bottom: 10px; }
+  .vehicle-form input {
+    margin-bottom: 10px; }
+
+.vehicle-input {
+  width: 100%; }
+
 .report {
   cursor: pointer; }
 
