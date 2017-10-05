@@ -129,18 +129,23 @@ function addVehicle() {
 
         $('#vehicle-form').on('click', '#submit', function (event) {
             event.preventDefault();
-            $('#results').append(`<div class="item vehicle">
-                                    <div class="picture">
-                                        <img src="" alt="">
-                                    </div>
-                                    <div class="iteminfo">
-                                        <p>${$('#vehicle-input').val()}</p>
-                                    </div>
-                                  </div>`);
-            modal.style.display = 'none';
+            if ($('#vehicle-input').val() !== '') {
+                $('#results').append(`<div class="item vehicle">
+                                        <div class="picture">
+                                            <img src="" alt="">
+                                        </div>
+                                        <div class="iteminfo">
+                                            <p>${$('#vehicle-input').val()}</p>
+                                        </div>
+                                    </div>`);
+                modal.style.display = 'none';
+            }
+            else {
+                alert('Please enter a vehicle name');
+            };
         });
 
-        $('#close').click(function () {
+        $('#vehicle-close').click(function () {
             modal.style.display = 'none';
         });
     });
@@ -149,20 +154,31 @@ function addVehicle() {
 
 function addItem() {
     $('#add-item').click(function () {
-        $('#results').append(`<div class="item">
-                                <div class="picture">
-                                    <img src="" alt="">
-                                </div>
-                                <div class="iteminfo">
-                                    <p>Another Item</p>
-                                </div>
-                                <div class="iteminfo">
-                                    <p>$Price</p>
-                                </div> 
-                                <div class="iteminfo">
-                                    <p>Quantity:</p>
-                                </div> 
-                            <div>`);
+        let modal = document.getElementById('addNewItem-modal');
+        modal.style.display = "block";
+
+        $('#item-form').on('click', '#submit', function (event) {
+            event.preventDefault();
+            $('#results').append(`<div class="item">
+                                        <div class="picture">
+                                            <img src="" alt="">
+                                        </div>
+                                        <div class="iteminfo">
+                                            <p>${$('#item-input').val()}</p>
+                                        </div>
+                                        <div class="iteminfo">
+                                            <p>$${$('#price-input').val()}</p>
+                                        </div> 
+                                        <div class="iteminfo">
+                                            <p>Quantity: ${$('#quantity-input').val()}</p>
+                                        </div> 
+                                   <div>`);
+            modal.style.display = 'none';
+        });
+
+        $('#item-close').click(function () {
+            modal.style.display = 'none';
+        });
     });
 };
 

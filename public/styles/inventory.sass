@@ -47,7 +47,7 @@
 .add:hover
     background-color: #dadee5
     
-.addNewVehicle-modal
+.addNewVehicle-modal, .addNewItem-modal
     display: none
     position: fixed
     z-index: 1 
@@ -79,7 +79,19 @@
     text-decoration: none
 
 .vehicle-form
-    height: 200px
+    display: flex
+    border: solid black 1px
+    legend
+        text-align: center
+        margin: 20px
+    
+    label
+        margin-bottom: 10px
+    
+    input
+        margin-bottom: 10px      
+
+.item-form
     display: flex
     border: solid black 1px
     legend
@@ -91,6 +103,3 @@
     
     input
         margin-bottom: 10px
-
-.vehicle-input
-    width: 100%       

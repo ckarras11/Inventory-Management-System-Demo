@@ -362,7 +362,7 @@ td, th {
 .add:hover {
   background-color: #dadee5; }
 
-.addNewVehicle-modal {
+.addNewVehicle-modal, .addNewItem-modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -394,7 +394,6 @@ td, th {
   text-decoration: none; }
 
 .vehicle-form {
-  height: 200px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -408,8 +407,19 @@ td, th {
   .vehicle-form input {
     margin-bottom: 10px; }
 
-.vehicle-input {
-  width: 100%; }
+.item-form {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: solid black 1px; }
+  .item-form legend {
+    text-align: center;
+    margin: 20px; }
+  .item-form label {
+    margin-bottom: 10px; }
+  .item-form input {
+    margin-bottom: 10px; }
 
 .report {
   cursor: pointer; }

@@ -37,14 +37,37 @@
     </section>
     <div class="addNewVehicle-modal" id="addNewVehicle-modal">
         <div class="modal-content">
-            <span class="close" id="close">&times;</span>
+            <span class="close" id="vehicle-close">&times;</span>
             <form action="" method="">
                 <fieldset class="vehicle-form" id="vehicle-form">
                     <legend>Add New Vehicle</legend>
                     <label for="vehicle-image">Image</label>
-                    <input type="file" name="vehicle-mage" id="vehicle-image">
+                    <input type="file" name="vehicle-image" id="vehicle-image">
                     <label for="vehicle-name">Vehicle Name</label>
-                    <input type="text" placeholder="Van 01" id="vehicle-input" class="vehicle-input">
+                    <input type="text" placeholder="Van 01" id="vehicle-input" class="vehicle-input" required>
+                    <input type="submit" value="Submit" id="submit">
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div class="addNewItem-modal" id="addNewItem-modal">
+        <div class="modal-content">
+            <span class="close" id="item-close">&times;</span>
+            <form action="" method="">
+                <fieldset class="item-form" id="item-form">
+                    <legend>Add New Item</legend>
+                    <label for="item-image">Image</label>
+                    <input type="file" name="item-image" id="item-image">
+                    <label for="item-name">Item Name</label>
+                    <input type="text" placeholder="Rotella 15w40" id="item-input" class="item-input" required>
+                    <label for="part-number">Part Number</label>
+                    <input type="text" placeholder="SLL-12345" id="partnumber-input" class="item-input" required>
+                    <label for="list-price">List Price</label>
+                    <input type="number" placeholder="25.99" id="price-input" class="item-input" required>
+                    <label for="quantity">Quantity On Hand</label>
+                    <input type="number" placeholder="12" id="quantity-input" class="item-input" required>
+                    <label for="reorder-point">Minimum Amount</label>
+                    <input type="number" placeholder="6" id="reorder-input" class="item-input" required>
                     <input type="submit" value="Submit" id="submit">
                 </fieldset>
             </form>
