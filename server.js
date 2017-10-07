@@ -11,8 +11,8 @@ const bodyParser = require('body-parser');
 const { BasicStrategy } = require('passport-http');
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
-const { Item } = require('./models/item.js');
-const { DATABASE_URL, PORT } = require('./config.js')
+const { Item } = require('./models/item');
+const { DATABASE_URL, PORT } = require('./config')
 
 mongoose.Promise = global.Promise;
 
