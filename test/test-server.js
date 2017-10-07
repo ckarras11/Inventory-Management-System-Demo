@@ -61,4 +61,15 @@ describe('Testing', function () {
             })
         })
     })
+
+    describe('/logout', function () {
+        it('should return index.html', function () {
+            return chai.request(app)
+            .get('/logout')
+            .then(function(res) {
+                res.should.have.status(200);
+                res.should.be.html;
+            })
+        })
+    })
 })
