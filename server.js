@@ -126,6 +126,20 @@ app.post('/api/inventory', (req, res) => {
 
 });
 
+app.put('/api/inventory/:id', (req, res) => {
+
+});
+
+//Deletes an item from db
+app.delete('/api/inventory/:id', (req, res) => {
+    Item
+        .findByIdAndRemove(req.params.id)
+        .then(() => {
+            console.log(`Deleting item ${req.params.id}`);
+            res.status(204).end();
+        });
+});
+
 //Reports Endpoint
 app.get('/reports', (req, res) => {
     res.sendFile(__dirname + '/public/views/reports.html')

@@ -151,6 +151,25 @@ describe('Testing', function () {
         })
     })
 
+    describe('DELETE api/inventory/:id', function () {
+        it('should delete an item by id', function () {
+            let resItem;
+            return Item
+                .findOne()
+                .then(function(_item) {
+                    resItem = _item;
+                    return chai.request(app).delete(`/api/inventory/${resItem.id}`);
+                })
+                .then(function(res) {
+                    res.should.have.status(204);
+                    return Item.findById(resItem.id);
+                })
+                .then(function(_item) {
+                    should.not.exist(_item);
+                })
+        })
+    });
+
     describe('/reports', function () {
         it('should return reports.html', function () {
             return chai.request(app)
