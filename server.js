@@ -125,9 +125,24 @@ app.post('/api/inventory', (req, res) => {
         });
 
 });
-
+//Edits an item in the db
 app.put('/api/inventory/:id', (req, res) => {
-
+    if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+        res.status(400).json({
+            error: 'Request path id and request body id values must match'
+        });
+    }
+    const updated = {};
+    const updateableFields = ['item', 'listPrice', 'quantityOnHand', 'reorderPoint', 'vehicle_id'];
+    updateableFields.forEach(field => {
+        if (field in req.body) {
+            updated[field] = req.body[field]
+        }
+    });
+    Item
+        .findByIdAndUpdate(req.params.id, { $set: updated }, { new: true })
+        .then(updatedItem => res.status(204).end())
+        .catch(err => res.status(500).json({ error: 'Something went wrong' }))
 });
 
 //Deletes an item from db
@@ -139,6 +154,7 @@ app.delete('/api/inventory/:id', (req, res) => {
             res.status(204).end();
         });
 });
+
 
 //Reports Endpoint
 app.get('/reports', (req, res) => {

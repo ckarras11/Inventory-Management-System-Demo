@@ -51,7 +51,7 @@ describe('Testing', function () {
     after(function () {
         return closeServer();
     })
-
+    //ROOT ENDPOINT
     describe('/', function () {
         it('should return index.html', function () {
             return chai.request(app)
@@ -62,7 +62,7 @@ describe('Testing', function () {
                 })
         })
     })
-
+    //HOME ENDPOINT
     describe('/home', function () {
         it('should return home.html', function () {
             return chai.request(app)
@@ -73,7 +73,7 @@ describe('Testing', function () {
                 })
         })
     })
-
+    //INVENTORY ENDPOINT
     describe('/inventory', function () {
         it('should return inventory.html', function () {
             return chai.request(app)
@@ -84,7 +84,7 @@ describe('Testing', function () {
                 })
         })
     })
-
+    //GET /api/inventory ENDPOINT, gets all inventory items
     describe('GET /api/inventory', function () {
         it('should retreive all items', function () {
             let res;
@@ -125,7 +125,7 @@ describe('Testing', function () {
                 })
         })
     })
-
+    //POST /api/inventory ENDPOINT, creates new item in db
     describe('POST /api/inventory', function () {
         it('should create a new item in the db', function () {
             const newItem = generateData();
@@ -151,6 +151,38 @@ describe('Testing', function () {
         })
     })
 
+    describe('PUT api/inventory/:id', function () {
+        it('should update an item with supplied fields by id', function () {
+            const updateData = {
+                item: 'new item',
+                listPrice: 1000,
+                quantityOnHand: 15,
+                reorderPoint: 1,
+                vehicle_id: 'new vehicle'
+            };
+            return Item
+                .findOne()
+                .then(function(item) {
+                    updateData.id = item.id;
+                    return chai.request(app)
+                        .put(`/api/inventory/${updateData.id}`)
+                        .send(updateData)                    
+                })
+                .then(function(res) {
+                    res.should.have.status(204);
+                    return Item.findById(updateData.id)
+                })
+                .then(function(item) {
+                    item.item.should.equal(updateData.item);
+                    item.listPrice.should.equal(updateData.listPrice);
+                    item.quantityOnHand.should.equal(updateData.quantityOnHand);
+                    item.reorderPoint.should.equal(updateData.reorderPoint);
+                    item.vehicle_id.should.equal(updateData.vehicle_id);
+                })
+        })
+    })
+
+    //DELETE /api/inventory/:id removes item from db
     describe('DELETE api/inventory/:id', function () {
         it('should delete an item by id', function () {
             let resItem;
@@ -168,8 +200,8 @@ describe('Testing', function () {
                     should.not.exist(_item);
                 })
         })
-    });
-
+    })
+    //REPORTS ENDPOINT
     describe('/reports', function () {
         it('should return reports.html', function () {
             return chai.request(app)
@@ -180,7 +212,7 @@ describe('Testing', function () {
                 })
         })
     })
-
+    //LOGOUT ENDPOINT
     describe('/logout', function () {
         it('should return index.html', function () {
             return chai.request(app)
