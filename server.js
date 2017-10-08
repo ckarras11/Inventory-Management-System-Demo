@@ -14,6 +14,7 @@ const passport = require('passport')
 
 
 const { Vehicle } = require('./models/vehicle');
+const { User } = require('./models/user')
 const { DATABASE_URL, PORT } = require('./config');
 const inventoryRouter = require('./inventoryRouter');
 
