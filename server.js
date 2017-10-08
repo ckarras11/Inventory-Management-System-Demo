@@ -11,7 +11,8 @@ const bodyParser = require('body-parser');
 const { BasicStrategy } = require('passport-http');
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
-const { Item } = require('./models/item');
+
+
 const { Vehicle } = require('./models/vehicle');
 const { DATABASE_URL, PORT } = require('./config');
 const inventoryRouter = require('./inventoryRouter');
