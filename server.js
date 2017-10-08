@@ -12,6 +12,7 @@ const { BasicStrategy } = require('passport-http');
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 const { Item } = require('./models/item');
+const { Vehicle } = require('./models/vehicle')
 const { DATABASE_URL, PORT } = require('./config')
 
 mongoose.Promise = global.Promise;
@@ -60,26 +61,32 @@ app.use(session({ secret: "parker" }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(bodyParser.json());
 
+//Root Endpoint of App (Login Screen)
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html')
 })
 
-app.post('/',
+/*app.post('/',
     passport.authenticate('basic', {
         successRedirect: '/home',
         failureRedirect: '/'
-    }));
+    }));*/
 
+//Home Endpoint
 app.get('/home', (req, res) => {
     res.sendFile(__dirname + '/public/views/home.html')
 });
 
+//Inventory Endpoint
+//Serves Inventory Page
 app.get('/inventory', (req, res) => {
     res.sendFile(__dirname + '/public/views/inventory.html')
 });
 
-app.get('/test', (req, res) => {
+//Gets inventory items from DB
+app.get('/api/inventory', (req, res) => {
     Item
         .find()
         .then(items => {
@@ -91,19 +98,40 @@ app.get('/test', (req, res) => {
         });
 });
 
-app.post('/inventory', (req, res) => {
-    Item.create({
-        item: "Rotella 15w40",
-        listPrice: 25.99,
-        quantityOnHand: 12,
-        reorderPoint: 6
-    });
+//Creates new inventory items
+app.post('/api/inventory', (req, res) => {
+    const requiredFields = ['item', 'listPrice', 'quantityOnHand', 'reorderPoint', 'vehicle_id'];
+    for (let i = 0; i < requiredFields.length; i++) {
+        const field = requiredFields[i];
+        if (!(field in req.body)) {
+            const message = `Missing \`${field}\` in request body`
+            console.error(message);
+            console.log(req.body)
+            return res.status(400).send(message);
+        }
+    }
+    Item
+        .create({
+            item: req.body.item,
+            listPrice: req.body.listPrice,
+            quantityOnHand: req.body.quantityOnHand,
+            reorderPoint: req.body.reorderPoint,
+            vehicle_id: req.body.vehicle_id
+        })
+        .then(item => res.status(201).json(item.apiRepr()))
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: 'Something went wrong' });
+        });
+
 });
 
+//Reports Endpoint
 app.get('/reports', (req, res) => {
     res.sendFile(__dirname + '/public/views/reports.html')
 });
 
+//Logout Endpoint
 app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
