@@ -9,8 +9,8 @@ vehicleSchema.methods.apiRepr = function () {
     return {
         id: this.id,
         image: this.image,
-        vehicleName: this.vehicleName
-    }
+        vehicleName: this.vehicleName,
+    };
 };
 
 const Vehicle = mongoose.model('Vehicle', vehicleSchema, 'Vehicle');
