@@ -45,7 +45,7 @@ router.post('/', (req, res) => {
             res.status(500).json({ error: 'Something went wrong' });
         });
 });
-// Edits an item in the db
+// Edits an item in the DB
 router.put('/:id', (req, res) => {
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
         res.status(400).json({
@@ -65,7 +65,7 @@ router.put('/:id', (req, res) => {
         .catch(err => res.status(500).json({ error: 'Something went wrong' }));
 });
 
-// Deletes an item from db
+// Deletes an item from DB
 router.delete('/:id', (req, res) => {
     Item
         .findByIdAndRemove(req.params.id)
