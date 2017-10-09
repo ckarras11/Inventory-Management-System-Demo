@@ -32,7 +32,6 @@ function generateData() {
 function tearDown() {
     console.warn('Deleting DB');
     return mongoose.connection.dropDatabase();
-
 }
 
 describe('Testing api/inventory', function () {
@@ -51,7 +50,7 @@ describe('Testing api/inventory', function () {
     after(function () {
         return closeServer();
     });
-// GET /api/inventory ENDPOINT, gets all inventory items
+    // GET /api/inventory ENDPOINT, gets all inventory items
     describe('GET /api/inventory', function () {
         it('should retreive all items', function () {
             let res;
@@ -99,7 +98,7 @@ describe('Testing api/inventory', function () {
             return chai.request(app)
                 .post('/api/inventory')
                 .send(newItem)
-                .then(function(res) {
+                .then(function (res) {
                     res.should.have.status(201);
                     res.should.be.json;
                     res.body.should.be.a('object');
@@ -108,7 +107,7 @@ describe('Testing api/inventory', function () {
                     res.body.item.should.equal(newItem.item);
                     return Item.findById(res.body.id);
                 })
-                .then(function(item) {
+                .then(function (item) {
                     item.item.should.equal(newItem.item);
                     item.listPrice.should.equal(newItem.listPrice);
                     item.quantityOnHand.should.equal(newItem.quantityOnHand);
@@ -125,21 +124,21 @@ describe('Testing api/inventory', function () {
                 listPrice: 1000,
                 quantityOnHand: 15,
                 reorderPoint: 1,
-                vehicle_id: 'new vehicle'
+                vehicle_id: 'new vehicle',
             };
             return Item
                 .findOne()
-                .then(function(item) {
+                .then(function (item) {
                     updateData.id = item.id;
                     return chai.request(app)
                         .put(`/api/inventory/${updateData.id}`)
-                        .send(updateData);                    
+                        .send(updateData);
                 })
-                .then(function(res) {
+                .then(function (res) {
                     res.should.have.status(204);
                     return Item.findById(updateData.id);
                 })
-                .then(function(item) {
+                .then(function (item) {
                     item.item.should.equal(updateData.item);
                     item.listPrice.should.equal(updateData.listPrice);
                     item.quantityOnHand.should.equal(updateData.quantityOnHand);
@@ -155,15 +154,15 @@ describe('Testing api/inventory', function () {
             let resItem;
             return Item
                 .findOne()
-                .then(function(_item) {
+                .then(function (_item) {
                     resItem = _item;
                     return chai.request(app).delete(`/api/inventory/${resItem.id}`);
                 })
-                .then(function(res) {
+                .then(function (res) {
                     res.should.have.status(204);
                     return Item.findById(resItem.id);
                 })
-                .then(function(_item) {
+                .then(function (_item) {
                     should.not.exist(_item);
                 });
         });

@@ -29,7 +29,6 @@ function generateData() {
 function tearDown() {
     console.warn('Deleting DB');
     return mongoose.connection.dropDatabase();
-
 }
 
 
