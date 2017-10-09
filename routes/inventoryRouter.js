@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { Item } = require('./models/item');
+const { Item } = require('../models/item');
 
 
 // Gets inventory items from DB

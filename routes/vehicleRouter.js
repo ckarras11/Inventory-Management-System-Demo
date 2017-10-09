@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const router = express.Router();
-const { Vehicle } = require('./models/vehicle');
+const { Vehicle } = require('../models/vehicle');
 
 // Gets vehicle from DB
 router.get('/', (req, res) => {
