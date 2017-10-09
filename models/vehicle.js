@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const vehicleSchema = mongoose.Schema({
     image: String,
-    vehicleName: { type: String, required: true }
+    vehicleName: { type: String, required: true },
 });
 
 vehicleSchema.methods.apiRepr = function () {
@@ -15,4 +15,4 @@ vehicleSchema.methods.apiRepr = function () {
 
 const Vehicle = mongoose.model('Vehicle', vehicleSchema, 'Vehicle');
 
-module.exports = { Vehicle }
+module.exports = { Vehicle };
