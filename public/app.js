@@ -9,11 +9,21 @@ function getInventoryItems(callbackfn) {
     });
 }
 
+function getVehicle(callbackfn) {
+    $.ajax({
+        method: 'GET',
+        url: '/api/vehicle',
+        success: (data) => {
+            console.log(data);
+            callbackfn(data);
+        },
+    });
+}
 function displayInventoryItems(data) {
     for (index in data) {
         $('#results').append(`<div class="item" id="item">
                                     <div class="picture">
-                                        <img src="${data[index].image}" alt="">
+                                        <img src="" alt="">
                                     </div>
                                     <div class="iteminfo">
                                         <p id="name">${data[index].item}</p>
@@ -28,6 +38,13 @@ function displayInventoryItems(data) {
     }
 }
 
+function displayVehicle(data) {
+    for (index in data) {
+        $('#results').append(`<div class="item vehicle">
+                                <p>${data[index].vehicleName}</p>
+                              </div>`);
+    }
+}
 function getAndDisplayInventoryItems() {
     getInventoryItems(displayInventoryItems);
 }
@@ -173,5 +190,6 @@ $((document) => {
     runReport();
     addItem();
     addVehicle();
+    getVehicle(displayVehicle);
     //    editItem();
 });
