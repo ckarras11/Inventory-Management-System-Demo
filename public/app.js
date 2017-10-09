@@ -1,98 +1,28 @@
-console.log('its working');
-
-const MOCK_INVENTORY = {
-    inventory: [
-        {
-            id: '111111',
-            image: 'https://i5.walmartimages.com/asr/9a4a04d7-3059-49b1-a4fa-f5d78f43ebf2_1.c8301f7929be8b305ae0804e5ac298b0.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
-            item: 'Rotella 15w40',
-            partNumber: 'oil',
-            listPrice: 25.99,
-            quantityOnHand: 24,
-            reorderPoint: 6,
-            inventory_id: 'vehicle1',
-
-        },
-        {
-            id: '111111',
-            image: 'https://i5.walmartimages.com/asr/9a4a04d7-3059-49b1-a4fa-f5d78f43ebf2_1.c8301f7929be8b305ae0804e5ac298b0.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
-            item: 'Rotella 15w40',
-            partNumber: 'oil',
-            listPrice: 25.99,
-            quantityOnHand: 12,
-            reorderPoint: 6,
-            inventory_id: 'vehicle2',
-
-        },
-        {
-            id: '222222',
-            item: 'Shell ELC',
-            partNumber: 'coolant',
-            listPrice: 36.49,
-            quantityOnHand: 12,
-            reorderPoint: 6,
-        },
-        {
-            id: '333333',
-            item: 'Racor 900 Service Kit',
-            partNumber: '900kit',
-            listPrice: 47.99,
-            quantityOnHand: 6,
-            reorderPoint: 2,
-        },
-        {
-            id: '444444',
-            item: 'Racor 500 Service Kit',
-            partNumber: '500kit',
-            listPrice: 54.99,
-            quantityOnHand: 4,
-            reorderPoint: 2,
-        },
-        {
-            id: '555555',
-            item: 'Oil Sample Kit',
-            partNumber: 'oilkit',
-            listPrice: 50,
-            quantityOnHand: 3,
-            reorderPoint: 5,
-        },
-        {
-            id: '666666',
-            item: 'AFC 710',
-            partNumber: 'afc710',
-            listPrice: 30,
-            quantityOnHand: 2,
-            reorderPoint: 4,
-        },
-    ],
-};
-
-$((document) => {
-    selectVehicle();
-    runReport();
-    addItem();
-    addVehicle();
-//    editItem();
-});
-
 function getInventoryItems(callbackfn) {
-    setTimeout(() => { callbackfn(MOCK_INVENTORY); }, 100);
+    $.ajax({
+        method: 'GET',
+        url: '/api/inventory',
+        success: (data) => {
+            console.log(data);
+            callbackfn(data);
+        },
+    });
 }
 
 function displayInventoryItems(data) {
-    for (index in data.inventory) {
+    for (index in data) {
         $('#results').append(`<div class="item" id="item">
                                     <div class="picture">
-                                        <img src="${data.inventory[index].image}" alt="">
+                                        <img src="${data[index].image}" alt="">
                                     </div>
                                     <div class="iteminfo">
-                                        <p id="name">${data.inventory[index].item}</p>
+                                        <p id="name">${data[index].item}</p>
                                     </div>
                                     <div class="iteminfo">
-                                        <p id="price">$${data.inventory[index].listPrice}</p>
+                                        <p id="price">$${data[index].listPrice}</p>
                                     </div> 
                                     <div class="iteminfo">
-                                        <p id="quantity">Quantity: ${data.inventory[index].quantityOnHand}</p>
+                                        <p id="quantity">Quantity: ${data[index].quantityOnHand}</p>
                                     </div> 
                                 <div>`);
     }
@@ -102,11 +32,8 @@ function getAndDisplayInventoryItems() {
     getInventoryItems(displayInventoryItems);
 }
 
-/* $(function() {
-    getAndDisplayInventoryItems()
-}) */
-
 // Selects which vehicle to get inventory on
+// Pass param for vehicle_id for get request????
 function selectVehicle() {
     $('#results').on('click', '.vehicle', function () {
         console.log(this);
@@ -120,10 +47,18 @@ function selectVehicle() {
 // Gets all items below reorder point and displays them as a <ul>
 
 function reorderReport(data) {
-    for (index in data.inventory) {
-        if (data.inventory[index].quantityOnHand < data.inventory[index].reorderPoint) {
-            $('#reorder-list').append(`<li>${data.inventory[index].item} Quantity: ${data.inventory[index].quantityOnHand}, Reorder Point: ${data.inventory[index].reorderPoint}</li>`);
+    const itemsToReorder = [];
+    for (index in data) {
+        if (data[index].quantityOnHand < data[index].reorderPoint) {
+            itemsToReorder.push(data[index]);
+            // $('#reorder-list').append(`<li>${data[index].item} Quantity: ${data[index].quantityOnHand}, Reorder Point: ${data[index].reorderPoint}</li>`);
         }
+    }
+    if (itemsToReorder.length === 0) {
+        $('#reorder-list').append('No Items Below Reorder Point');
+    }
+    else {
+        itemsToReorder.forEach(item => $('#reorder-list').append(`<li>${item.item} Quantity: ${item.quantityOnHand}, Reorder Point: ${item.reorderPoint}</li>`));
     }
 }
 
@@ -196,7 +131,7 @@ function addItem() {
 
     $('#item-close').click(() => {
         modal.style.display = 'none';
-    });   
+    });
 }
 
 /* function editItem () {
@@ -233,3 +168,10 @@ function addItem() {
     });
 }; */
 
+$((document) => {
+    selectVehicle();
+    runReport();
+    addItem();
+    addVehicle();
+    //    editItem();
+});
