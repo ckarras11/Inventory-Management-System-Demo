@@ -11,11 +11,9 @@ const hash = bcrypt.hashSync('B4c0/\/', salt);
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const { BasicStrategy } = require('passport-http');
-const passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
-
-const { Vehicle } = require('./models/vehicle');
 const { User } = require('./models/user');
 const { DATABASE_URL, PORT } = require('./config');
 const inventoryRouter = require('./routes/inventoryRouter');
