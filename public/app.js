@@ -1,3 +1,6 @@
+let isVehicle = true;
+
+// Gets all inventory item from the database
 function getInventoryItems(callbackfn, vehicle) {
     $.ajax({
         method: 'GET',
@@ -10,7 +13,8 @@ function getInventoryItems(callbackfn, vehicle) {
     });
 }
 
-function getVehicle(callbackfn) {
+// Initialized in inventory.html onload
+function getVehicles(callbackfn) {
     $.ajax({
         method: 'GET',
         url: '/api/vehicle',
@@ -20,6 +24,71 @@ function getVehicle(callbackfn) {
         },
     });
 }
+
+// Used to render a new vehicle when added
+function renderNewVehicle(vehicleData) {
+    $('#results').append(`<div class="item vehicle">
+                            <p id="${vehicleData.vehicleName}">${vehicleData.vehicleName}</p>
+                        </div>`);
+}
+
+// Used to render a new item when added
+function renderNewItem(itemData) {
+    $('#results').append(`<div class="item" id="item">
+                            <div class="picture">
+                                <img src="" alt="">
+                            </div>
+                            <div class="iteminfo">
+                                <p id="name">${itemData.item}</p>
+                            </div>
+                            <div class="iteminfo">
+                                <p id="price">$${itemData.listPrice}</p>
+                            </div> 
+                            <div class="iteminfo">
+                                <p id="quantity">Quantity: ${itemData.quantityOnHand}</p>
+                                <p> ${itemData.vehicle_id} </p>
+                            </div> 
+                        <div>`);
+}
+
+// Submit handler for add item/vehicle form modal
+function formSubmitHandler(e) {
+    e.preventDefault();
+    const form = $(this);
+    const url = form.attr('action');
+    const formData = new FormData(this);
+
+    const keys = Array.from(formData.keys());
+    const data = keys.map(key => `${key}=${encodeURIComponent(formData.get(key))}`).join('&');
+
+    if (isVehicle) {
+        $.ajax({
+            method: 'POST',
+            url,
+            data,
+            success: (data) => {
+                console.log(data);
+                hideVehicleModal();
+                renderNewVehicle(data);
+            },
+        });
+    }
+    else {
+        $.ajax({
+            method: 'POST',
+            url,
+            data,
+            success: (data) => {
+                console.log(data);
+                hideItemModal();
+                renderNewItem(data);
+                isVehicle = true;
+            },
+        });
+    }
+}
+
+// Displays inventory for chosen vehicle
 function displayInventoryItems(data, vehicle) {
     console.log(vehicle);
     const inventory = [];
@@ -30,7 +99,7 @@ function displayInventoryItems(data, vehicle) {
     }
     console.log(inventory.length);
     if (inventory.length === 0) {
-        // alert('no items');
+        // alert('ohhh nooo');
         $('#results').append('<h2>No items for current vehicle, use "add item" to create one</h2>')
     }
     else {
@@ -54,13 +123,14 @@ function displayInventoryItems(data, vehicle) {
     }
 }
 
+// Called initally on inventory.html body load to display all vehicles
 function displayVehicle(data) {
     for (index in data) {
-        $('#results').append(`<div class="item vehicle">
-                                <p id="${data[index].vehicleName}">${data[index].vehicleName}</p>
-                              </div>`);
+        renderNewVehicle(data[index]);
     }
 }
+
+// Gets inventory items and displays inventory for a specific vehicle
 function getAndDisplayInventoryItems(vehicle) {
     getInventoryItems(displayInventoryItems, vehicle);
 }
@@ -78,7 +148,6 @@ function selectVehicle() {
 }
 
 // Gets all items below reorder point and displays them as a <ul>
-
 function reorderReport(data) {
     const itemsToReorder = [];
     for (index in data) {
@@ -96,6 +165,8 @@ function reorderReport(data) {
         itemsToReorder.forEach(item => $('#reorder-list').append(`<li>${item.item} Quantity: ${item.quantityOnHand}, Reorder Point: ${item.reorderPoint} (${item.vehicle_id})</li>`));
     }
 }
+
+// Sorts items for reorderReport
 function sortItem(a, b) {
     const itemA = a.item.toLowerCase();
     const itemB = b.item.toLowerCase();
@@ -109,6 +180,7 @@ function sortItem(a, b) {
     }
     return comparison;
 }
+
 // Event handler for report selection
 function runReport() {
     $('#reorder').click(() => {
@@ -117,67 +189,41 @@ function runReport() {
     });
 }
 
-function addVehicle() {
+// Hides vehicle modal on form submit or exit
+function hideVehicleModal() {
     let modal = document.getElementById('addNewVehicle-modal');
+    modal.style.display = 'none';
+}
 
+// Hides item modal on form submit or exit
+function hideItemModal() {
+    let modal = document.getElementById('addNewItem-modal');
+    modal.style.display = 'none';
+}
+
+// Handles adding a vehicle and displaying the modal
+function addVehicle() {
     $('#add-vehicle').click(() => {
+        let modal = document.getElementById('addNewVehicle-modal');
         modal.style.display = 'block';
+        isVehicle = true;
     });
-
-    $('#vehicle-form').on('click', '#submit', (event) => {
-        if ($('#vehicle-input').val() !== '') {
-            $('#results').append(`<div class="item vehicle">
-                                    <div class="picture">
-                                        <img src="" alt="">
-                                    </div> 
-                                    <div class="iteminfo">
-                                        <p>${$('#vehicle-input').val()}</p>
-                                    </div>
-                                </div>`);
-            modal.style.display = 'none';
-        } else {
-            alert('Please enter a vehicle name');
-            event.preventDefault();
-        }
-        // $('#vehicle-input').val('');
-    });
-
+    $('#vehicle-form').submit(formSubmitHandler);
     $('#vehicle-close').click(() => {
-        modal.style.display = 'none';
+        hideVehicleModal();
     });
 }
 
-
+// Handles adding an item and displaying the modal
 function addItem() {
-    let modal = document.getElementById('addNewItem-modal');
     $('#add-item').click(() => {
+        let modal = document.getElementById('addNewItem-modal');
         modal.style.display = 'block';
+        isVehicle = false;
     });
-
-    $('#item-form').on('click', '#submit', (event) => {
-        // event.preventDefault();
-        $('#results').append(`<div class="item" id="item">
-                                    <div class="picture">
-                                        <img src="" alt="">
-                                    </div>
-                                    <div class="iteminfo">
-                                        <p>${$('#item-input').val()}</p>
-                                    </div>
-                                    <div class="iteminfo">
-                                        <p>$${$('#price-input').val()}</p>
-                                    </div> 
-                                    <div class="iteminfo">
-                                        <p>Quantity: ${$('#quantity-input').val()}</p>
-                                    </div> 
-                                <div>`);
-        modal.style.display = 'none';
-        /* $('#item-input').val('');
-        $('#price-input').val('');
-        $('#quantity-input').val(''); */
-    });
-
+    $('#item-form').submit(formSubmitHandler);
     $('#item-close').click(() => {
-        modal.style.display = 'none';
+        hideItemModal();
     });
 }
 
