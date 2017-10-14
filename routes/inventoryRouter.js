@@ -2,14 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { Item } = require('../models/item');
-const flash = require('express-flash-messages');
 
 const router = express.Router();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const jsonParser = bodyParser.json();
 
 
-router.use(flash());
 // Gets inventory items from DB
 router.get('/', (req, res) => {
     Item

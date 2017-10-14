@@ -13,7 +13,8 @@ const bodyParser = require('body-parser');
 const { BasicStrategy } = require('passport-http');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const flash = require('express-flash-messages');
+const expressValidator = require('express-validator');
+const flash = require('connect-flash');
 
 
 const { User } = require('./models/user');
@@ -23,6 +24,21 @@ const vehicleRouter = require('./routes/vehicleRouter');
 
 mongoose.Promise = global.Promise;
 
+// Express session middleware
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
+
+// Express messages middleware
+app.use(require('connect-flash')());
+
+app.use(function (req, res, next) {
+    res.locals.messages = require('express-messages')(req, res);
+    next();
+});
 
 /* passport.use(new LocalStrategy({ usernameField: 'email' },
     function (username, password, done) {
@@ -40,13 +56,13 @@ mongoose.Promise = global.Promise;
 )); */
 
 passport.use(new BasicStrategy(((username, password, done) => {
-        User.findOne({ username }, (err, user) => {
-            if (err) { return done(err); }
-            if (!user) { return done(null, false); }
-            if (!user.validPassword(password)) { return done(null, false); }
-            return done(null, user);
-        });
-    })));
+    User.findOne({ username }, (err, user) => {
+        if (err) { return done(err); }
+        if (!user) { return done(null, false); }
+        if (!user.validPassword(password)) { return done(null, false); }
+        return done(null, user);
+    });
+})));
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -58,7 +74,6 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-app.use(flash());
 app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(session({ secret: 'parker' }));
