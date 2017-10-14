@@ -403,7 +403,7 @@ td, th {
   display: -ms-flexbox;
   display: flex;
   border: solid black 1px; }
-  .vehicle-form legend {
+  .vehicle-form h2 {
     text-align: center;
     margin: 20px; }
   .vehicle-form label {
@@ -417,7 +417,7 @@ td, th {
   display: -ms-flexbox;
   display: flex;
   border: solid black 1px; }
-  .item-form legend {
+  .item-form h2 {
     text-align: center;
     margin: 20px; }
   .item-form label {
