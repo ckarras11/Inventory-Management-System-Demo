@@ -13,6 +13,8 @@ const bodyParser = require('body-parser');
 const { BasicStrategy } = require('passport-http');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const flash = require('express-flash-messages');
+
 
 const { User } = require('./models/user');
 const { DATABASE_URL, PORT } = require('./config');
@@ -56,7 +58,7 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-
+app.use(flash());
 app.use(express.static('public'));
 app.use(morgan('common'));
 app.use(session({ secret: 'parker' }));
@@ -69,6 +71,7 @@ app.use('/api/vehicle', vehicleRouter);
 
 // Root Endpoint of App (Login Screen)
 app.get('/', (req, res) => {
+
     res.sendFile(`${__dirname}/public/index.html`);
 });
 
