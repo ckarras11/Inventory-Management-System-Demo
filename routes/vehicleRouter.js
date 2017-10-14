@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { Vehicle } = require('../models/vehicle');
 
 const router = express.Router();
-const { Vehicle } = require('../models/vehicle');
+const jsonParser = bodyParser.json();
+
 
 // Gets vehicle from DB
 router.get('/', (req, res) => {
@@ -19,7 +21,8 @@ router.get('/', (req, res) => {
 });
 
 // Creates a new vehicle
-router.post('/', (req, res) => {
+router.post('/', jsonParser, (req, res) => {
+    console.log(req.body);
     const requiredFields = ['vehicleName'];
     for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];

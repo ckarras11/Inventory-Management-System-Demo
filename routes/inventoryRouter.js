@@ -1,11 +1,15 @@
 const express = require('express');
-
-const router = express.Router();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { Item } = require('../models/item');
+const flash = require('express-flash-messages');
+
+const router = express.Router();
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const jsonParser = bodyParser.json();
 
 
+router.use(flash());
 // Gets inventory items from DB
 router.get('/', (req, res) => {
     Item
@@ -20,7 +24,8 @@ router.get('/', (req, res) => {
 });
 
 // Creates new inventory items
-router.post('/', (req, res) => {
+router.post('/', jsonParser, (req, res) => {
+    console.log(req.body);
     const requiredFields = ['item', 'listPrice', 'quantityOnHand', 'reorderPoint', 'vehicle_id'];
     for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];
@@ -28,6 +33,7 @@ router.post('/', (req, res) => {
             const message = `Missing \`${field}\` in request body`;
             console.error(message);
             console.log(req.body);
+            console.log(message);
             return res.status(400).send(message);
         }
     }
