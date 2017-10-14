@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../styles/style.css">
     <title>Inventory Management System</title>
 </head>
-<body onload="getVehicle(displayVehicle)">
+<body onload="getVehicles(displayVehicle)">
     <header role="banner" class="title">
         <h1>Inventory Management System</h1>
     </header>
@@ -32,9 +32,9 @@
     <div class="addNewVehicle-modal" id="addNewVehicle-modal">
         <div class="modal-content">
             <span class="close" id="vehicle-close">&times;</span>
-            <form name="addvehicle" action="/api/vehicle" method="POST">
-                <fieldset class="vehicle-form" id="vehicle-form">
-                    <legend>Add New Vehicle</legend>
+            <form name="addvehicle" id="vehicle-form" action="/api/vehicle">
+                <fieldset class="vehicle-form" >
+                    <h2>Add New Vehicle</h2>
                     <label for="vehicle-image">Image</label>
                     <input type="file" name="image" id="vehicle-image">
                     <label for="vehicle-name">Vehicle Name</label>
@@ -47,9 +47,9 @@
     <div class="addNewItem-modal" id="addNewItem-modal">
         <div class="modal-content">
             <span class="close" id="item-close">&times;</span>
-            <form name="additem" action="/api/inventory" method="POST" novalidate>
-                <fieldset class="item-form" id="item-form">
-                    <legend>Add New Item</legend>
+            <form name="additem" id="item-form" action="/api/inventory" method="POST" novalidate>
+                <fieldset class="item-form" >
+                    <h2>Add New Item</h2>
                     <label for="image">Image</label>
                     <input type="file" name="image" id="item-image">
                     <label for="item">Item Name</label>
