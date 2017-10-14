@@ -1,10 +1,11 @@
-function getInventoryItems(callbackfn) {
+function getInventoryItems(callbackfn, vehicle) {
     $.ajax({
         method: 'GET',
         url: '/api/inventory',
         success: (data) => {
             console.log(data);
-            callbackfn(data);
+            callbackfn(data, vehicle);
+            editItem(data);
         },
     });
 }
@@ -19,45 +20,60 @@ function getVehicle(callbackfn) {
         },
     });
 }
-function displayInventoryItems(data) {
+function displayInventoryItems(data, vehicle) {
+    console.log(vehicle);
+    const inventory = [];
     for (index in data) {
-        $('#results').append(`<div class="item" id="item">
+        if (data[index].vehicle_id === vehicle) {
+            inventory.push(data[index]);
+        }
+    }
+    console.log(inventory.length);
+    if (inventory.length === 0) {
+        // alert('no items');
+        $('#results').append('<h2>No items for current vehicle, use "add item" to create one</h2>')
+    }
+    else {
+        inventory.forEach((item) => {
+            $('#results').append(`<div class="item" id="item">
                                     <div class="picture">
                                         <img src="" alt="">
                                     </div>
                                     <div class="iteminfo">
-                                        <p id="name">${data[index].item}</p>
+                                        <p id="name">${item.item}</p>
                                     </div>
                                     <div class="iteminfo">
-                                        <p id="price">$${data[index].listPrice}</p>
+                                        <p id="price">$${item.listPrice}</p>
                                     </div> 
                                     <div class="iteminfo">
-                                        <p id="quantity">Quantity: ${data[index].quantityOnHand}</p>
+                                        <p id="quantity">Quantity: ${item.quantityOnHand}</p>
+                                        <p> ${item.vehicle_id} </p>
                                     </div> 
                                 <div>`);
+        });
     }
 }
 
 function displayVehicle(data) {
     for (index in data) {
         $('#results').append(`<div class="item vehicle">
-                                <p>${data[index].vehicleName}</p>
+                                <p id="${data[index].vehicleName}">${data[index].vehicleName}</p>
                               </div>`);
     }
 }
-function getAndDisplayInventoryItems() {
-    getInventoryItems(displayInventoryItems);
+function getAndDisplayInventoryItems(vehicle) {
+    getInventoryItems(displayInventoryItems, vehicle);
 }
 
 // Selects which vehicle to get inventory on
 // Pass param for vehicle_id for get request????
 function selectVehicle() {
     $('#results').on('click', '.vehicle', function () {
-        console.log(this);
+        console.log($(this).find('p').attr('id'));
         $('.vehicle').addClass('js-hide-display');
         $('#add-item').removeClass('js-hide-display');
         $('#add-vehicle').addClass('js-hide-display');
-        getAndDisplayInventoryItems();
+        getAndDisplayInventoryItems($(this).find('p').attr('id'));
     });
 }
 
@@ -71,14 +87,28 @@ function reorderReport(data) {
             // $('#reorder-list').append(`<li>${data[index].item} Quantity: ${data[index].quantityOnHand}, Reorder Point: ${data[index].reorderPoint}</li>`);
         }
     }
+    console.log(itemsToReorder);
+    itemsToReorder.sort(sortItem);
     if (itemsToReorder.length === 0) {
         $('#reorder-list').append('No Items Below Reorder Point');
     }
     else {
-        itemsToReorder.forEach(item => $('#reorder-list').append(`<li>${item.item} Quantity: ${item.quantityOnHand}, Reorder Point: ${item.reorderPoint}</li>`));
+        itemsToReorder.forEach(item => $('#reorder-list').append(`<li>${item.item} Quantity: ${item.quantityOnHand}, Reorder Point: ${item.reorderPoint} (${item.vehicle_id})</li>`));
     }
 }
+function sortItem(a, b) {
+    const itemA = a.item.toLowerCase();
+    const itemB = b.item.toLowerCase();
 
+    let comparison = 0;
+    if (itemA > itemB) {
+        comparison = 1;
+    }
+    else if (itemA < itemB) {
+        comparison = -1;
+    }
+    return comparison;
+}
 // Event handler for report selection
 function runReport() {
     $('#reorder').click(() => {
@@ -95,12 +125,11 @@ function addVehicle() {
     });
 
     $('#vehicle-form').on('click', '#submit', (event) => {
-        event.preventDefault();
         if ($('#vehicle-input').val() !== '') {
             $('#results').append(`<div class="item vehicle">
                                     <div class="picture">
                                         <img src="" alt="">
-                                    </div>
+                                    </div> 
                                     <div class="iteminfo">
                                         <p>${$('#vehicle-input').val()}</p>
                                     </div>
@@ -108,8 +137,9 @@ function addVehicle() {
             modal.style.display = 'none';
         } else {
             alert('Please enter a vehicle name');
+            event.preventDefault();
         }
-        $('#vehicle-input').val('');
+        // $('#vehicle-input').val('');
     });
 
     $('#vehicle-close').click(() => {
@@ -125,7 +155,7 @@ function addItem() {
     });
 
     $('#item-form').on('click', '#submit', (event) => {
-        event.preventDefault();
+        // event.preventDefault();
         $('#results').append(`<div class="item" id="item">
                                     <div class="picture">
                                         <img src="" alt="">
@@ -141,9 +171,9 @@ function addItem() {
                                     </div> 
                                 <div>`);
         modal.style.display = 'none';
-        $('#item-input').val('');
+        /* $('#item-input').val('');
         $('#price-input').val('');
-        $('#quantity-input').val('');
+        $('#quantity-input').val(''); */
     });
 
     $('#item-close').click(() => {
@@ -151,45 +181,43 @@ function addItem() {
     });
 }
 
-/* function editItem () {
+function editItem(data) {
     let modal = document.getElementById('editItem-modal');
     $('#results').on('click', '#item', function () {
-        console.log($(this).find('#name')[0].innerHTML);
-        $('#editItem-modal').append(`
-            <div class="modal-content">
-                <span class="close" id="editItem-close">&times;</span>
-                <form action="" method="">
-                    <fieldset class="item-form" id="item-form">
-                        <legend>Edit Item</legend>
-                        <label for="item-image">Image</label>
-                        <input type="file" name="item-image" id="item-image">
-                        <label for="item-name">Item Name</label>
-                        <input type="text" value="${$(this).find('#name')[0].innerHTML}" id="item-input" class="item-input" required>
-                        <label for="part-number">Part Number</label>
-                        <input type="text" placeholder="SLL-12345" id="partnumber-input" class="item-input" required>
-                        <label for="list-price">List Price</label>
-                        <input type="number" value="${$(this).find('#price')[0].innerHTML}" id="price-input" class="item-input" required>
-                        <label for="quantity">Quantity On Hand</label>
-                        <input type="number" value="${$(this).find('#quantity')[0].innerHTML}" id="quantity-input" class="item-input" required>
-                        <label for="reorder-point">Minimum Amount</label>
-                        <input type="number" placeholder="6" id="reorder-input" class="item-input" required>
-                        <input type="submit" value="Submit" id="submit">
-                    </fieldset>
-                </form>
-            </div>`);
-        modal.style.display = "block";
+        console.log(this);
+        /*  $('#editItem-modal').append(`
+             <div class="modal-content">
+                 <span class="close" id="editItem-close">&times;</span>
+                 <form action="" method="">
+                     <fieldset class="item-form" id="item-form">
+                         <legend>Edit Item</legend>
+                         <label for="item-image">Image</label>
+                         <input type="file" name="item-image" id="item-image">
+                         <label for="item-name">Item Name</label>
+                         <input type="text" value="${$(this).find('#name')[0].innerHTML}" id="item-input" class="item-input" required>
+                         <label for="part-number">Part Number</label>
+                         <input type="text" placeholder="SLL-12345" id="partnumber-input" class="item-input" required>
+                         <label for="list-price">List Price</label>
+                         <input type="number" value="${$(this).find('#price')[0].innerHTML}" id="price-input" class="item-input" required>
+                         <label for="quantity">Quantity On Hand</label>
+                         <input type="number" value="${$(this).find('#quantity')[0].innerHTML}" id="quantity-input" class="item-input" required>
+                         <label for="reorder-point">Minimum Amount</label>
+                         <input type="number" placeholder="6" id="reorder-input" class="item-input" required>
+                         <input type="submit" value="Submit" id="submit">
+                     </fieldset>
+                 </form>
+             </div>`);
+         modal.style.display = "block"; */
     });
-    $('#editItem-modal').on('click', '#editItem-close', function () {
-        modal.style.display = 'none';
-        $('#editItem-modal').empty();
-    });
-}; */
+    /*   $('#editItem-modal').on('click', '#editItem-close', function () {
+          modal.style.display = 'none';
+          $('#editItem-modal').empty();
+      }); */
+}
 
 $((document) => {
     selectVehicle();
     runReport();
     addItem();
     addVehicle();
-    getVehicle(displayVehicle);
-    //    editItem();
 });

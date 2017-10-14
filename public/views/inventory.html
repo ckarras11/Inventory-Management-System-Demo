@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../styles/style.css">
     <title>Inventory Management System</title>
 </head>
-<body>
+<body onload="getVehicle(displayVehicle)">
     <header role="banner" class="title">
         <h1>Inventory Management System</h1>
     </header>
@@ -32,13 +32,13 @@
     <div class="addNewVehicle-modal" id="addNewVehicle-modal">
         <div class="modal-content">
             <span class="close" id="vehicle-close">&times;</span>
-            <form action="" method="">
+            <form name="addvehicle" action="/api/vehicle" method="POST">
                 <fieldset class="vehicle-form" id="vehicle-form">
                     <legend>Add New Vehicle</legend>
                     <label for="vehicle-image">Image</label>
-                    <input type="file" name="vehicle-image" id="vehicle-image">
+                    <input type="file" name="image" id="vehicle-image">
                     <label for="vehicle-name">Vehicle Name</label>
-                    <input type="text" placeholder="Van 01" id="vehicle-input" class="vehicle-input" required>
+                    <input type="text" name="vehicleName" placeholder="Van 01" id="vehicle-input" class="vehicle-input">
                     <input type="submit" value="Submit" id="submit">
                 </fieldset>
             </form>
@@ -47,21 +47,23 @@
     <div class="addNewItem-modal" id="addNewItem-modal">
         <div class="modal-content">
             <span class="close" id="item-close">&times;</span>
-            <form action="" method="">
+            <form name="additem" action="/api/inventory" method="POST" novalidate>
                 <fieldset class="item-form" id="item-form">
                     <legend>Add New Item</legend>
-                    <label for="item-image">Image</label>
-                    <input type="file" name="item-image" id="item-image">
-                    <label for="item-name">Item Name</label>
-                    <input type="text" placeholder="Rotella 15w40" id="item-input" class="item-input" required>
-                    <label for="part-number">Part Number</label>
-                    <input type="text" placeholder="SLL-12345" id="partnumber-input" class="item-input" required>
-                    <label for="list-price">List Price</label>
-                    <input type="number" placeholder="25.99" id="price-input" class="item-input" required>
-                    <label for="quantity">Quantity On Hand</label>
-                    <input type="number" placeholder="12" id="quantity-input" class="item-input" required>
-                    <label for="reorder-point">Minimum Amount</label>
-                    <input type="number" placeholder="6" id="reorder-input" class="item-input" required>
+                    <label for="image">Image</label>
+                    <input type="file" name="image" id="item-image">
+                    <label for="item">Item Name</label>
+                    <input type="text" name="item" placeholder="Rotella 15w40" id="item-input" class="item-input">
+                    <label for="partNumber">Part Number</label>
+                    <input type="text" name="partNumber" placeholder="SLL-12345" id="partnumber-input" class="item-input">
+                    <label for="listPrice">List Price</label>
+                    <input type="number" name="listPrice" placeholder="25.99" id="price-input" class="item-input">
+                    <label for="quantityOnHand">Quantity On Hand</label>
+                    <input type="number" name="quantityOnHand" placeholder="12" id="quantity-input" class="item-input">
+                    <label for="reorderPoint">Minimum Amount</label>
+                    <input type="number" name="reorderPoint" placeholder="6" id="reorder-input" class="item-input">
+                    <label for="vehicle_id">Vehicle Id</label>
+                    <input type="text" name="vehicle_id" placeholder="Van" id="vehicle_id" class="item-input">
                     <input type="submit" value="Submit" id="submit">
                 </fieldset>
             </form>
