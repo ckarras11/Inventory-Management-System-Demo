@@ -21,14 +21,19 @@ function getVehicles(callbackfn) {
         success: (data) => {
             console.log(data);
             callbackfn(data);
+            editVehicle();
         },
     });
 }
 
 // Used to render a new vehicle when added
 function renderNewVehicle(vehicleData) {
-    $('#results').append(`<div class="item vehicle">
-                            <p id="${vehicleData.id}">${vehicleData.vehicleName}</p>
+    $('#results').append(`<div class="item vehicle" id="${vehicleData.id}">
+                            <p>${vehicleData.vehicleName}</p>
+                            <div class="edit-vehicle">
+                                <span class="delete">&times;</span>
+                                <span class="edit">&#9998;</span>
+                            </div>
                         </div>`);
 }
 
@@ -57,7 +62,6 @@ function renderNewItem(itemData) {
 function formSubmitHandler(e) {
     e.preventDefault();
     const form = $(this);
-    const url = '/api/inventory';
     const formData = new FormData(this);
 
     const keys = Array.from(formData.keys());
@@ -66,7 +70,7 @@ function formSubmitHandler(e) {
     if (isVehicle) {
         $.ajax({
             method: 'POST',
-            url,
+            url: '/api/vehicle',
             data,
             success: (data) => {
                 console.log(data);
@@ -78,7 +82,7 @@ function formSubmitHandler(e) {
     else {
         $.ajax({
             method: 'POST',
-            url,
+            url: '/api/inventory',
             data,
             success: (data) => {
                 console.log(data);
@@ -230,6 +234,27 @@ function selectItem() {
                 // reason why multiple windows sets up handler each time
             },
         });
+    });
+}
+function editVehicle() {
+    $('#results').on('click', '.delete', function (e) {
+        e.stopPropagation();
+        let currentItemId = this.parentNode.parentNode.getAttribute('id');
+        if (confirm('Are you sure you want to delete this item?') === true) {
+            $.ajax({
+                method: 'DELETE',
+                url: `/api/vehicle/${currentItemId}`,
+                success: () => {
+                    $(`#${currentItemId}`).remove();
+                    currentItemId = '';
+                },
+            });
+            console.log('delete');
+        }
+    });
+    $('#results').on('click', '.edit', function (e) {
+        e.stopPropagation();
+        console.log(`edit ${this.parentNode.parentNode.getAttribute('id')}`);
     });
 }
 
