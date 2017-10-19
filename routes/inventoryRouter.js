@@ -21,6 +21,17 @@ router.get('/', (req, res) => {
         });
 });
 
+// Get a single item from DB
+router.get('/:id', (req, res) => {
+    Item
+        .findById(req.params.id)
+        .then(item => res.json(item.apiRepr()))
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({ error: 'Something went wrong' });
+        });
+});
+
 // Creates new inventory items
 router.post('/', jsonParser, (req, res) => {
     console.log(req.body);
@@ -38,6 +49,7 @@ router.post('/', jsonParser, (req, res) => {
     Item
         .create({
             item: req.body.item,
+            partNumber: req.body.partNumber,
             listPrice: req.body.listPrice,
             quantityOnHand: req.body.quantityOnHand,
             reorderPoint: req.body.reorderPoint,
