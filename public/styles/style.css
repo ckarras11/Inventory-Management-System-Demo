@@ -425,6 +425,9 @@ td, th {
   .item-form input {
     margin-bottom: 10px; }
 
+.js-hide-display {
+  display: none; }
+
 .report {
   cursor: pointer; }
 
