@@ -273,6 +273,7 @@ function editItem(data) {
     // console.log(data);
     let modal = document.getElementById('editItem-modal');
     let currentItemId = data.id;
+    let vehicle = data.vehicle_id;
     $('#editItem-modal').html(`
                             <div class="modal-content">
                                 <span class="close" id="editItem-close">&times;</span>
@@ -306,7 +307,7 @@ function editItem(data) {
                             </div>`);
     modal.style.display = 'block';
 
-    $('#editItem-modal').on('click', '#deleteButton', function () {
+    $('#editItem-modal').off('click', '#deleteButton').on('click', '#deleteButton', function () {
         console.log(currentItemId);
         if (confirm('Are you sure you want to delete this item?') === true) {
             $.ajax({
@@ -325,7 +326,7 @@ function editItem(data) {
             modal.style.display = 'none';
         }
     });
-    $('#editItem-modal').on('click', '#editButton', function () {
+    $('#editItem-modal').off('click', '#editButton').on('click', '#editButton', function () {
         console.log('edit');
         console.log(currentItemId);
         $('.item-modal').hide();
@@ -338,7 +339,6 @@ function editItem(data) {
         $('#modal-form-container #quantity-input').val(`${data.quantityOnHand}`);
         $('#modal-form-container #reorder-input').val(`${data.reorderPoint}`);
         $('#modal-form-container #vehicle_id').val(`${data.vehicle_id}`);
-        // console.log(itemForm);
     });
 
     $('#modal-form-container').on('submit', '#item-form', (e) => {
@@ -362,6 +362,9 @@ function editItem(data) {
             success: () => {
                 console.log('yay');
                 modal.style.display = 'none';
+                console.log(vehicle);
+                $('.jsEdit').remove();
+                getAndDisplayInventoryItems(vehicle);
             },
         });
     });
