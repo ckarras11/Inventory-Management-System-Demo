@@ -62,14 +62,14 @@ router.post('/', jsonParser, (req, res) => {
         });
 });
 // Edits an item in the DB
-router.put('/:id', (req, res) => {
+router.put('/:id', jsonParser, (req, res) => {
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
         res.status(400).json({
             error: 'Request path id and request body id values must match',
         });
     }
     const updated = {};
-    const updateableFields = ['item', 'listPrice', 'quantityOnHand', 'reorderPoint', 'vehicle_id'];
+    const updateableFields = ['item', 'partNumber', 'listPrice', 'quantityOnHand', 'reorderPoint', 'vehicle_id'];
     updateableFields.forEach((field) => {
         if (field in req.body) {
             updated[field] = req.body[field];
