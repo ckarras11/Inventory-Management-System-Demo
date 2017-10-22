@@ -1,5 +1,6 @@
 let isVehicle = true;
 
+
 // Gets all inventory item from the database
 function getInventoryItems(callbackfn, vehicle) {
     $.ajax({
@@ -194,6 +195,10 @@ function hideItemModal() {
     modal.style.display = 'none';
 }
 
+function hideEditVehicleModal() {
+    let modal = document.getElementById('editVehicle-modal');
+    modal.style.display = 'none';
+}
 // Handles adding a vehicle and displaying the modal
 function addVehicle() {
     $('#add-vehicle').click(() => {
@@ -202,7 +207,9 @@ function addVehicle() {
         isVehicle = true;
         $('#vehicle-form #vehicle-input').val('');
     });
+
     $('#vehicle-form').submit(formSubmitHandler);
+
     $('#vehicle-close').click(() => {
         hideVehicleModal();
     });
@@ -238,7 +245,8 @@ function selectItem() {
     });
 }
 function editVehicle() {
-    $('#results').on('click', '.delete', function (e) {
+    let currentVehicleId = '';
+    $('#results').off().on('click', '.delete', function (e) {
         e.stopPropagation();
         let currentVehicleId = this.parentNode.parentNode.getAttribute('id');
         if (confirm('Are you sure you want to delete this item?') === true) {
@@ -255,16 +263,43 @@ function editVehicle() {
     });
     $('#results').on('click', '.edit', function (e) {
         e.stopPropagation();
-        let currentVehicleId = this.parentNode.parentNode.getAttribute('id');
+        currentVehicleId = this.parentNode.parentNode.getAttribute('id');
         let currentVehicle = this.parentNode.parentNode.firstChild.nextSibling.innerHTML;
-        let modal = document.getElementById('addNewVehicle-modal');
+        let modal = document.getElementById('editVehicle-modal');
+        console.log($('#addNewVehicle-modal')[0].innerHTML);
+        let vehicleModal = $('#addNewVehicle-modal')[0].innerHTML;
         modal.style.display = 'block';
+        $('#editVehicle-modal').html(vehicleModal);
         $('#vehicle-form h2').text('Edit Vehicle');
         $('#vehicle-form #vehicle-input').val(currentVehicle);
     });
 
-    $('#item-close').click(() => {
-        hideVehicleModal();
+
+    $('#editVehicle-modal').off().on('submit', '#vehicle-form', (e) => {
+        e.preventDefault();
+        let updatedVehicle = {
+            id: currentVehicleId,
+            image: $(event.target).find('#vehicle-image').val(),
+            vehicleName: $(event.target).find('#vehicle-input').val(),
+        };
+        $.ajax({
+            url: `api/vehicle/${currentVehicleId}`,
+            method: 'PUT',
+            data: updatedVehicle,
+            success: () => {
+                hideEditVehicleModal();
+                $('.vehicle').remove();
+                getVehicles(displayVehicle);    
+                currentVehicleId = '';
+                console.log(updatedVehicle);
+            },
+        });
+    });
+
+
+    $('#editVehicle-modal').on('click', '#vehicle-close', () => {
+        hideEditVehicleModal();
+        currentVehicleId = '';
     });
 }
 
@@ -352,8 +387,8 @@ function editItem(data) {
             quantityOnHand: $(event.target).find('#quantity-input').val(),
             reorderPoint: $(event.target).find('#reorder-input').val(),
             vehicle_id: $(event.target).find('#vehicle_id').val(),
-          };
-          console.log(updatedItem);
+        };
+        console.log(updatedItem);
 
         $.ajax({
             method: 'PUT',
