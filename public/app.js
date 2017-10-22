@@ -87,6 +87,7 @@ function formSubmitHandler(e) {
             data,
             success: (data) => {
                 console.log(data);
+                $('.noItems').addClass('js-hide-display');
                 hideItemModal();
                 renderNewItem(data);
                 isVehicle = true;
@@ -107,7 +108,7 @@ function displayInventoryItems(data, vehicle) {
     console.log(inventory.length);
     if (inventory.length === 0) {
         // alert('ohhh nooo');
-        $('#results').append('<h2>No items for current vehicle, use "add item" to create one</h2>');
+        $('#results').append('<h2 class="noItems">No items for current vehicle, use "add item" to create one</h2>');
     }
     else {
         inventory.forEach((item) => {
@@ -246,7 +247,7 @@ function selectItem() {
 }
 function editVehicle() {
     let currentVehicleId = '';
-    $('#results').off().on('click', '.delete', function (e) {
+    $('#results').off('click', '.delete').on('click', '.delete', function (e) {
         e.stopPropagation();
         let currentVehicleId = this.parentNode.parentNode.getAttribute('id');
         if (confirm('Are you sure you want to delete this item?') === true) {
