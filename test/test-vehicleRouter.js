@@ -138,7 +138,7 @@ describe('Testing api/vehicle', function () {
                 })
                 .then(function (res) {
                     res.should.have.status(204);
-                    return Vehicle.findById(resVehicle.id)
+                    return Vehicle.findById(resVehicle.id);
                 })
                 .then(function (_vehicle) {
                     should.not.exist(_vehicle);
