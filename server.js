@@ -1,100 +1,122 @@
 const express = require('express');
 const morgan = require('morgan');
-
-const app = express();
 const mongoose = require('mongoose');
-// Password salt and hash
-const bcrypt = require('bcryptjs');
-
-const salt = bcrypt.genSaltSync(10);
-const hash = bcrypt.hashSync('B4c0/\/', salt);
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const { BasicStrategy } = require('passport-http');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
-
-
+const cookieParser = require('cookie-parser');
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const jsonParser = bodyParser.json();
 const { User } = require('./models/user');
-const { DATABASE_URL, PORT } = require('./config');
-const inventoryRouter = require('./routes/inventoryRouter');
-const vehicleRouter = require('./routes/vehicleRouter');
 
+// Password salt and hash
+const bcrypt = require('bcryptjs');
+
+
+// Initializing app
+const app = express();
 mongoose.Promise = global.Promise;
+
+// Bodyparser Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+// Sets static public folder
+app.use(express.static('public'));
 
 // Express session middleware
 app.use(session({
-    secret: 'keyboard cat',
+    secret: 'parker puppy',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: true }
 }));
 
-// Express messages middleware
-app.use(require('connect-flash')());
+// Passport Init
+app.use(passport.initialize());
+app.use(passport.session());
 
+// Express Validator
+const { check, validationResult } = require('express-validator/check');
+const { matchedData, sanitize } = require('express-validator/filter');
+
+app.use(expressValidator());
+
+// Connect Flash
+app.use(flash());
+
+// Connect Flash messages
 app.use(function (req, res, next) {
-    res.locals.messages = require('express-messages')(req, res);
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
     next();
 });
 
-/* passport.use(new LocalStrategy({ usernameField: 'email' },
-    function (username, password, done) {
-        User.findOne({ username: username }, function (err, user) {
-            if (err) { return done(err); }
-            if (!user) {
-                return done(null, false, { message: 'Incorrect username.' });
-            }
-            if (!user.validPassword(password)) {
-                return done(null, false, { message: 'Incorrect password.' });
-            }
-            return done(null, user);
-        });
-    }
-)); */
-
-passport.use(new BasicStrategy(((username, password, done) => {
-    User.findOne({ username }, (err, user) => {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false); }
-        if (!user.validPassword(password)) { return done(null, false); }
-        return done(null, user);
-    });
-})));
-
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        done(err, user);
-    });
-});
-
-app.use(express.static('public'));
+// Morgan logging middleware
 app.use(morgan('common'));
-app.use(session({ secret: 'parker' }));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(bodyParser.json());
+
+// Routers and modules
+const { DATABASE_URL, PORT } = require('./config');
+const inventoryRouter = require('./routes/inventoryRouter');
+const vehicleRouter = require('./routes/vehicleRouter');
+const loginRouter = require('./routes/loginRouter');
+
 app.use('/api/inventory', inventoryRouter);
 app.use('/api/vehicle', vehicleRouter);
+app.use('/login', loginRouter);
 
-// Root Endpoint of App (Login Screen)
+// Root Endpoint of App (Landing Page)
 app.get('/', (req, res) => {
-
     res.sendFile(`${__dirname}/public/index.html`);
 });
 
-/* app.post('/',
-    passport.authenticate('basic', {
-        successRedirect: '/home',
-        failureRedirect: '/'
-    })); */
+// Login Screen
+app.get('/login', (req, res) => {
+    res.sendFile(`${__dirname}/public/views/login.html`);
+});
+// Register
+app.get('/register', (req, res) => {
+    res.sendFile(`${__dirname}/public/views/register.html`);
+});
+
+app.post('/register', (req, res) => {
+
+    const name = req.body.name;
+    const companyCode = req.body.code;
+    const email =  req.body.email;
+    const password = req.body.password;
+
+    // Hashing
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+
+    // Validation
+    req.checkBody('password', 'Password must be at least 5 characters').isLength({ min: 5 });
+    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+    let errors = req.validationErrors();
+
+    if (errors) {
+        console.log('yes')
+        console.log(errors);
+        res.redirect('/register');
+    } else {
+        let newUser = new User({
+            name,
+            companyCode,
+            email,
+            password: hash,
+        });
+        console.log(newUser);
+        User
+            .create(newUser)
+            .then(res.redirect('/login'));
+    }
+});
 
 // Home Endpoint
 app.get('/home', (req, res) => {
@@ -102,7 +124,6 @@ app.get('/home', (req, res) => {
 });
 
 // Inventory Endpoint
-// Serves Inventory Page
 app.get('/inventory', (req, res) => {
     res.sendFile(`${__dirname}/public/views/inventory.html`);
 });
@@ -112,12 +133,13 @@ app.get('/reports', (req, res) => {
     res.sendFile(`${__dirname}/public/views/reports.html`);
 });
 
-// Logout Endpoint
+// Logout Endpoint (redirects back to login)
 app.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/');
+    res.redirect('/login');
 });
 
+// Initializing Server
 let server;
 
 function runServer(databaseUrl = DATABASE_URL, port = PORT) {
