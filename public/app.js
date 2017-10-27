@@ -1,13 +1,11 @@
 let isVehicle = true;
 
-
 // Gets all inventory item from the database
 function getInventoryItems(callbackfn, vehicle) {
     $.ajax({
         method: 'GET',
         url: '/api/inventory',
         success: (data) => {
-            console.log(data);
             callbackfn(data, vehicle);
             selectItem();
         },
@@ -20,7 +18,6 @@ function getVehicles(callbackfn) {
         method: 'GET',
         url: '/api/vehicle',
         success: (data) => {
-            console.log(data);
             callbackfn(data);
             editVehicle();
         },
@@ -43,6 +40,9 @@ function renderNewItem(itemData) {
     /*     <div class="picture">
                 <img src="" alt="">
             </div> */
+/*             <div class="iteminfo">
+            <p> ${itemData.vehicle_id} </p>
+        </div>  */
     $('#results').append(`<div class="item jsEdit" id="${itemData.id}">
                             <div class="iteminfo">
                                 <p class="name">${itemData.item}</p>
@@ -52,9 +52,6 @@ function renderNewItem(itemData) {
                             </div>
                             <div class="iteminfo">
                                 <p class="quantity">Quantity: ${itemData.quantityOnHand}</p>
-                            </div> 
-                            <div class="iteminfo">
-                                <p> ${itemData.vehicle_id} </p>
                             </div> 
                         </div>`);
 }
@@ -74,7 +71,6 @@ function formSubmitHandler(e) {
             url: '/api/vehicle',
             data,
             success: (data) => {
-                console.log(data);
                 hideVehicleModal();
                 renderNewVehicle(data);
             },
@@ -86,7 +82,6 @@ function formSubmitHandler(e) {
             url: '/api/inventory',
             data,
             success: (data) => {
-                console.log(data);
                 $('.noItems').addClass('js-hide-display');
                 hideItemModal();
                 renderNewItem(data);
@@ -98,14 +93,12 @@ function formSubmitHandler(e) {
 
 // Displays inventory for chosen vehicle
 function displayInventoryItems(data, vehicle) {
-    console.log(vehicle);
     const inventory = [];
     for (index in data) {
         if (data[index].vehicle_id === vehicle) {
             inventory.push(data[index]);
         }
     }
-    console.log(inventory.length);
     if (inventory.length === 0) {
         // alert('ohhh nooo');
         $('#results').append('<h2 class="noItems">No items for current vehicle, use "add item" to create one</h2>');
@@ -133,8 +126,6 @@ function getAndDisplayInventoryItems(vehicle) {
 // Pass param for vehicle_id for get request????
 function selectVehicle() {
     $('#results').on('click', '.vehicle', function () {
-        console.log(this);
-        console.log($(this).find('p')[0].innerHTML); // .attr('id')
         $('.vehicle').addClass('js-hide-display');
         $('#add-item').removeClass('js-hide-display');
         $('#add-vehicle').addClass('js-hide-display');
@@ -151,7 +142,6 @@ function reorderReport(data) {
             // $('#reorder-list').append(`<li>${data[index].item} Quantity: ${data[index].quantityOnHand}, Reorder Point: ${data[index].reorderPoint}</li>`);
         }
     }
-    console.log(itemsToReorder);
     itemsToReorder.sort(sortItem);
     if (itemsToReorder.length === 0) {
         $('#reorder-list').append('No Items Below Reorder Point');
@@ -234,7 +224,6 @@ function selectItem() {
     let currentItemId = '';
     $('#results').on('click', '.jsEdit', function () {
         currentItemId = $(this).attr('id');
-        console.log(currentItemId);
         $.ajax({
             method: 'GET',
             url: `/api/inventory/${currentItemId}`,
@@ -259,7 +248,6 @@ function editVehicle() {
                     currentVehicleId = '';
                 },
             });
-            console.log('delete');
         }
     });
     $('#results').on('click', '.edit', function (e) {
@@ -267,7 +255,6 @@ function editVehicle() {
         currentVehicleId = this.parentNode.parentNode.getAttribute('id');
         let currentVehicle = this.parentNode.parentNode.firstChild.nextSibling.innerHTML;
         let modal = document.getElementById('editVehicle-modal');
-        console.log($('#addNewVehicle-modal')[0].innerHTML);
         let vehicleModal = $('#addNewVehicle-modal')[0].innerHTML;
         modal.style.display = 'block';
         $('#editVehicle-modal').html(vehicleModal);
@@ -292,7 +279,6 @@ function editVehicle() {
                 $('.vehicle').remove();
                 getVehicles(displayVehicle);    
                 currentVehicleId = '';
-                console.log(updatedVehicle);
             },
         });
     });
@@ -305,8 +291,6 @@ function editVehicle() {
 }
 
 function editItem(data) {
-    console.log(data.id);
-    // console.log(data);
     let modal = document.getElementById('editItem-modal');
     let currentItemId = data.id;
     let vehicle = data.vehicle_id;
@@ -344,7 +328,6 @@ function editItem(data) {
     modal.style.display = 'block';
 
     $('#editItem-modal').off('click', '#deleteButton').on('click', '#deleteButton', function () {
-        console.log(currentItemId);
         if (confirm('Are you sure you want to delete this item?') === true) {
             $.ajax({
                 method: 'DELETE',
@@ -355,16 +338,12 @@ function editItem(data) {
                     currentItemId = '';
                 },
             });
-            console.log('delete');
-
         }
         else {
             modal.style.display = 'none';
         }
     });
     $('#editItem-modal').off('click', '#editButton').on('click', '#editButton', function () {
-        console.log('edit');
-        console.log(currentItemId);
         $('.item-modal').hide();
         let itemForm = $('#item-form')[0].outerHTML;
         $('#modal-form-container').append(itemForm);
@@ -389,16 +368,13 @@ function editItem(data) {
             reorderPoint: $(event.target).find('#reorder-input').val(),
             vehicle_id: $(event.target).find('#vehicle_id').val(),
         };
-        console.log(updatedItem);
 
         $.ajax({
             method: 'PUT',
             url: `/api/inventory/${currentItemId}`,
             data: updatedItem,
             success: () => {
-                console.log('yay');
                 modal.style.display = 'none';
-                console.log(vehicle);
                 $('.jsEdit').remove();
                 getAndDisplayInventoryItems(vehicle);
             },
