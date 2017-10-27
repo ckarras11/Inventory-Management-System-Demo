@@ -1,8 +1,29 @@
 .vehicle
     cursor: pointer
+    p
+        margin-bottom: 80px
 
 .vehicle:hover
-    background-color:  #dadee5
+    //background-color:  #dadee5
+
+.edit-vehicle
+    display: flex
+    justify-content: space-around
+
+.delete
+    color: red
+
+.delete:hover
+    font-size: 24px
+    
+.edit:hover
+    font-size: 24px
+
+.item
+    cursor: pointer
+
+.item:hover
+    border: solid red 4px
 
 @media (min-width: 775px)
     .item
@@ -39,7 +60,7 @@
 .iteminfo
     p
         margin-top: 5px
-        margin-bottom: 5px  
+        margin-bottom: 5px 
 
 .add
     cursor: pointer
@@ -47,7 +68,7 @@
 .add:hover
     background-color: #dadee5
     
-.addNewVehicle-modal
+.addNewVehicle-modal, .addNewItem-modal, .editItem-modal, .editVehicle-modal
     display: none
     position: fixed
     z-index: 1 
@@ -79,10 +100,22 @@
     text-decoration: none
 
 .vehicle-form
-    height: 200px
     display: flex
     border: solid black 1px
-    legend
+    h2
+        text-align: center
+        margin: 20px
+    
+    label
+        margin-bottom: 10px
+    
+    input
+        margin-bottom: 10px      
+
+.item-form
+    display: flex
+    border: solid black 1px
+    h2
         text-align: center
         margin: 20px
     
@@ -92,5 +125,5 @@
     input
         margin-bottom: 10px
 
-.vehicle-input
-    width: 100%       
+.js-hide-display
+    display: none

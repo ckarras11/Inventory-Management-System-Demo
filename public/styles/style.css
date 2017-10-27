@@ -156,8 +156,7 @@ td, th {
 
 .title {
   text-align: center;
-  color: red;
-  border: solid black 1px; }
+  color: red; }
 
 .container {
   border: solid black 1px;
@@ -169,7 +168,6 @@ td, th {
   height: 600px; }
 
 .sidebar {
-  border: solid black 1px;
   width: 20%;
   height: 100%; }
   .sidebar ul {
@@ -179,7 +177,7 @@ td, th {
     margin: 0px; }
     .sidebar ul li {
       text-align: center;
-      border: solid black 1px;
+      border-bottom: solid black 1px;
       padding: 0px;
       height: 50px;
       font-size: 14px;
@@ -219,7 +217,7 @@ td, th {
   background-color: #dadee5; }
 
 .results {
-  border: solid black 1px;
+  border-left: solid black 1px;
   width: 80%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -281,21 +279,12 @@ td, th {
       text-align: center;
       margin-top: 20px; } }
 
-.email {
+.input {
   margin-left: 15px;
   margin-right: 15px; }
-  .email input {
+  .input input {
     width: 100%;
     margin-bottom: 15px;
-    padding: 5px;
-    border: solid black 1px;
-    border-radius: 5px; }
-
-.password {
-  margin-left: 15px;
-  margin-right: 15px; }
-  .password input {
-    width: 100%;
     padding: 5px;
     border: solid black 1px;
     border-radius: 5px; }
@@ -317,9 +306,32 @@ td, th {
 
 .vehicle {
   cursor: pointer; }
+  .vehicle p {
+    margin-bottom: 80px; }
 
-.vehicle:hover {
-  background-color: #dadee5; }
+.edit-vehicle {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around; }
+
+.delete {
+  color: red; }
+
+.delete:hover {
+  font-size: 24px; }
+
+.edit:hover {
+  font-size: 24px; }
+
+.item {
+  cursor: pointer; }
+
+.item:hover {
+  border: solid red 4px; }
 
 @media (min-width: 775px) {
   .item {
@@ -362,7 +374,7 @@ td, th {
 .add:hover {
   background-color: #dadee5; }
 
-.addNewVehicle-modal {
+.addNewVehicle-modal, .addNewItem-modal, .editItem-modal, .editVehicle-modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -394,13 +406,12 @@ td, th {
   text-decoration: none; }
 
 .vehicle-form {
-  height: 200px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   border: solid black 1px; }
-  .vehicle-form legend {
+  .vehicle-form h2 {
     text-align: center;
     margin: 20px; }
   .vehicle-form label {
@@ -408,8 +419,22 @@ td, th {
   .vehicle-form input {
     margin-bottom: 10px; }
 
-.vehicle-input {
-  width: 100%; }
+.item-form {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: solid black 1px; }
+  .item-form h2 {
+    text-align: center;
+    margin: 20px; }
+  .item-form label {
+    margin-bottom: 10px; }
+  .item-form input {
+    margin-bottom: 10px; }
+
+.js-hide-display {
+  display: none; }
 
 .report {
   cursor: pointer; }

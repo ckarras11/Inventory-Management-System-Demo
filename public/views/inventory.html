@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../styles/style.css">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow|Ubuntu" rel="stylesheet">
     <title>Inventory Management System</title>
 </head>
-<body>
+<body onload="getVehicles(displayVehicle)">
     <header role="banner" class="title">
         <h1>Inventory Management System</h1>
     </header>
@@ -17,18 +18,12 @@
                 <li class="active"><a href="/inventory">Inventory</a></li>
                 <li><a href="/reports">Reports</a></li>
                 <li><a href="/home">Home</a></li>
-                <li><a href="/">Log Out</a></li>
+                <li><a href="/logout">Log Out</a></li>
             </ul>
         </nav>
         <div id="results" class="results">
             <div class="add item" id="add-vehicle">
                     <p>add vehicle</p>
-            </div>
-            <div class="item vehicle">
-                <p>vehicle1</p>
-            </div>
-            <div class="item vehicle">
-                <p>vehicle2</p>
             </div>
             <div class="add item js-hide-display" id="add-item">
                 <p>add item</p>
@@ -37,18 +32,49 @@
     </section>
     <div class="addNewVehicle-modal" id="addNewVehicle-modal">
         <div class="modal-content">
-            <span class="close" id="close">&times;</span>
-            <form action="" method="">
-                <fieldset class="vehicle-form" id="vehicle-form">
-                    <legend>Add New Vehicle</legend>
+            <span class="close" id="vehicle-close">&times;</span>
+            <form name="addvehicle" id="vehicle-form" action="/api/vehicle">
+                <fieldset class="vehicle-form" >
+                    <h2>Add New Vehicle</h2>
                     <label for="vehicle-image">Image</label>
-                    <input type="file" name="vehicle-mage" id="vehicle-image">
+                    <input type="file" name="image" id="vehicle-image">
                     <label for="vehicle-name">Vehicle Name</label>
-                    <input type="text" placeholder="Van 01" id="vehicle-input" class="vehicle-input">
+                    <input type="text" name="vehicleName" placeholder="Van 01" id="vehicle-input" class="vehicle-input">
                     <input type="submit" value="Submit" id="submit">
                 </fieldset>
             </form>
         </div>
+    </div>
+    <div class="addNewItem-modal" id="addNewItem-modal">
+        <div class="modal-content">
+            <span class="close" id="item-close">&times;</span>
+            <form name="additem" id="item-form" novalidate>
+                <fieldset class="item-form" >
+                    <h2>Add New Item</h2>
+                    <label for="image">Image</label>
+                    <input type="file" name="image" id="item-image">
+                    <label for="item">Item Name</label>
+                    <input type="text" name="item" placeholder="Rotella 15w40" id="item-input" class="item-input">
+                    <label for="partNumber">Part Number</label>
+                    <input type="text" name="partNumber" placeholder="SLL-12345" id="partnumber-input" class="item-input">
+                    <label for="listPrice">List Price</label>
+                    <input type="number" name="listPrice" placeholder="25.99" id="price-input" class="item-input">
+                    <label for="quantityOnHand">Quantity On Hand</label>
+                    <input type="number" name="quantityOnHand" placeholder="12" id="quantity-input" class="item-input">
+                    <label for="reorderPoint">Minimum Amount</label>
+                    <input type="number" name="reorderPoint" placeholder="6" id="reorder-input" class="item-input">
+                    <label for="vehicle_id">Vehicle Id</label>
+                    <input type="text" name="vehicle_id" placeholder="Van" id="vehicle_id" class="item-input">
+                    <input type="submit" value="Submit" id="submit">
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div class="editItem-modal" id="editItem-modal">
+        
+    </div>
+    <div class="editVehicle-modal" id="editVehicle-modal">
+
     </div>
     
     <footer role="contentinfo" class="copyright">
