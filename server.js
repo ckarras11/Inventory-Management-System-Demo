@@ -91,10 +91,6 @@ app.post('/register', (req, res) => {
     const email =  req.body.email;
     const password = req.body.password;
 
-    // Hashing
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
-
     // Validation
     req.checkBody('password', 'Password must be at least 5 characters').isLength({ min: 5 });
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
@@ -105,13 +101,11 @@ app.post('/register', (req, res) => {
         console.log(errors);
         res.redirect('/register');
     } else {
-        let newUser = new User({
-            name,
-            companyCode,
-            email,
-            password: hash,
-        });
-        console.log(newUser);
+        const newUser = new User();
+        newUser.name = name;
+        newUser.companyCode = companyCode;
+        newUser.email = email;
+        newUser.password = newUser.generateHash(password);
         User
             .create(newUser)
             .then(res.redirect('/login'));
