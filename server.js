@@ -94,6 +94,7 @@ app.post('/register', (req, res) => {
     // Validation
     req.checkBody('password', 'Password must be at least 5 characters').isLength({ min: 5 });
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+    req.checkBody('code', 'Invalid Company Code').equals('DIE3390');
     let errors = req.validationErrors();
 
     if (errors) {
