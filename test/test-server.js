@@ -33,6 +33,29 @@ describe('Testing', function () {
                 });
         });
     });
+    // LOGIN ENDPOINT
+    describe('/login', function () {
+        it('should return login.html', function () {
+            return chai.request(app)
+                .get('/login')
+                .then(function (res) {
+                    res.should.have.status(200);
+                    res.should.be.html;
+                });
+        });
+    });
+    // REGISTER ENDPOINT
+    describe('/register', function () {
+        it('should return register.html', function () {
+            return chai.request(app)
+                .get('/register')
+                .then(function (res) {
+                    res.should.have.status(200);
+                    res.should.be.html;
+                });
+        });
+    });
+    
     // HOME ENDPOINT
     describe('/home', function () {
         it('should return home.html', function () {

@@ -24,7 +24,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' },
                 console.log('wrong password');
                 return done(null, false, { message: 'Incorrect password.' });
               }
-            console.log('yay');
+            console.log('you are logged in');
             return done(null, user);
         });
     },
