@@ -27,8 +27,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' },
             console.log('you are logged in');
             return done(null, user);
         });
-    },
-));
+    }));
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);

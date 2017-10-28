@@ -88,7 +88,7 @@ app.post('/register', (req, res) => {
 
     const name = req.body.name;
     const companyCode = req.body.code;
-    const email =  req.body.email;
+    const email = req.body.email;
     const password = req.body.password;
 
     // Validation
@@ -113,8 +113,19 @@ app.post('/register', (req, res) => {
     }
 });
 
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated()) {
+        return next();
+    }
+
+    // if they aren't redirect them to the home page
+    console.log('not logged in');
+    res.redirect('/login');
+}
 // Home Endpoint
-app.get('/home', (req, res) => {
+app.get('/home', isLoggedIn, (req, res) => {
     res.sendFile(`${__dirname}/public/views/home.html`);
 });
 
