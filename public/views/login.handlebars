@@ -1,0 +1,27 @@
+<header role="banner" class="logo">
+    <h3>Inventory Management System</h3>
+    <p>Company Logo</p>
+</header>
+<section class="login-container">
+
+    <form role="form" id="login" action="/login" method="POST">
+        <fieldset class="login">
+            <h2>Login</h2>
+            <div class="email input">
+                <label for="email">Email:</label><br><br>
+                <input id="email" name="email" type="email" placeholder="example@yoursite.com" required>
+            </div>
+            <div class="password input">
+                <label for="password">Password:</label><br><br>
+                <input id="password" name="password" type="password" placeholder="password" required>
+            </div>
+            <div class="button-container">
+                <button class="submit" type="submit">Login</button><br>
+            </div>
+            <div class="forgot">
+                <a href="/register">Don't have an account?</a>
+            </div>
+        </fieldset>
+        </form>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="../app.js"></script>

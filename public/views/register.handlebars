@@ -1,0 +1,40 @@
+<header role="banner" class="logo">
+    <h3>Inventory Management System</h3>
+</header>
+{{#if errors}} 
+    {{#each errors}}
+        <div class="alert alert-danger">{{msg}}</div>
+    {{/each}}
+{{/if}}
+<section class="login-container">
+
+    <form role="form" id="register" action="/register" method="POST">
+        <fieldset class="login">
+            <h2>Create new account</h2>
+            <div class="name input">
+                <label for="name">Full Name:</label><br><br>
+                <input id="name" name="name" type="text" placeholder="John Doe" required>
+            </div>
+            <div class="email input">
+                <label for="code">Company Code:</label><br><br>
+                <input id="code" name="code" type="text" placeholder="X36aEf" required>
+            </div>
+            <div class="email input">
+                <label for="email">Email:</label><br><br>
+                <input id="email" name="email" type="email" placeholder="example@yoursite.com" required>
+            </div>
+            <div class="password input">
+                <label for="password">Password:</label><br><br>
+                <input id="password" name="password" type="password" placeholder="password" required>
+            </div>
+            <div class="confirm-password input">
+                <label for="confirm-password">Confirm Password:</label><br><br>
+                <input id="confirm-password" name="password2" type="password" placeholder="password" required>
+            </div>
+            <div class="button-container">
+                <button class="submit" type="submit">Register</button><br>
+            </div>
+        </fieldset>
+        </form>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="../app.js"></script>
