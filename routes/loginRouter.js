@@ -7,22 +7,24 @@ const { matchedData, sanitize } = require('express-validator/filter');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
+const flash = require('connect-flash');
 
 const router = express.Router();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const jsonParser = bodyParser.json();
 
-passport.use(new LocalStrategy({ usernameField: 'email' },
-    function (email, password, done) {
+
+passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true },
+    function (req, email, password, done) {
         User.findOne({ email }, function (err, user) {
             console.log(user);
             if (err) { return done(err); }
             if (!user) {
-                return done(null, false, { message: 'Incorrect username.' });
+                return done(null, false, { message: 'Incorrect username or password' });
             }
             if (!user.validPassword(password)) {
                 console.log('wrong password');
-                return done(null, false, { message: 'Incorrect password.' });
+                return done(null, false, { message: 'Incorrect username or password.' });
               }
             console.log('you are logged in');
             return done(null, user);
@@ -40,9 +42,9 @@ passport.deserializeUser(function (id, done) {
 });
 
 router.post('/',
-    passport.authenticate('local', { successRedirect: '/home', failureRedirect: '/login', failureFlash: false }),
+    passport.authenticate('local', { successRedirect: '/home', failureRedirect: '/login', failureFlash: true }),
     function (req, res) {
-        console.log('route works');
+        next();
     });
 
 module.exports = router;
