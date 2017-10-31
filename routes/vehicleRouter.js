@@ -6,6 +6,9 @@ const { Vehicle } = require('../models/vehicle');
 const router = express.Router();
 const jsonParser = bodyParser.json();
 
+// Express Validator
+const { check, validationResult } = require('express-validator/check');
+const { matchedData, sanitize } = require('express-validator/filter');
 
 // Gets vehicle from DB
 router.get('/', (req, res) => {
@@ -22,7 +25,6 @@ router.get('/', (req, res) => {
 
 // Creates a new vehicle
 router.post('/', jsonParser, (req, res) => {
-    console.log(req.body);
     const requiredFields = ['vehicleName'];
     for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];
@@ -33,6 +35,14 @@ router.post('/', jsonParser, (req, res) => {
             return res.status(400).send(message);
         }
     }
+   /*  Vehicle
+        .find({ vehicleName: req.body.vehicleName })
+        .then((vehicle) => {
+            if (vehicle) {
+                const message = 'Vehicle already exists';
+                return res.status(409).send(message);
+            }
+        }); */
     Vehicle
         .create({
             vehicleName: req.body.vehicleName,

@@ -40,7 +40,7 @@ router.post('/', jsonParser, (req, res) => {
         const field = requiredFields[i];
         if (!(field in req.body)) {
             const message = `Missing \`${field}\` in request body`;
-            console.error(message);
+            // console.error(message);
             console.log(req.body);
             console.log(message);
             return res.status(400).send(message);
