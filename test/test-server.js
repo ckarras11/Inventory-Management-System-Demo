@@ -29,7 +29,6 @@ describe('Testing', function () {
                 .get('/')
                 .then(function (res) {
                     res.should.have.status(200);
-                    res.should.be.html;
                 });
         });
     });
@@ -40,7 +39,6 @@ describe('Testing', function () {
                 .get('/login')
                 .then(function (res) {
                     res.should.have.status(200);
-                    res.should.be.html;
                 });
         });
     });
@@ -51,7 +49,6 @@ describe('Testing', function () {
                 .get('/register')
                 .then(function (res) {
                     res.should.have.status(200);
-                    res.should.be.html;
                 });
         });
     });
@@ -63,7 +60,6 @@ describe('Testing', function () {
                 .get('/home')
                 .then(function (res) {
                     res.should.have.status(200);
-                    res.should.be.html;
                 });
         });
     });
@@ -74,7 +70,6 @@ describe('Testing', function () {
                 .get('/inventory')
                 .then(function (res) {
                     res.should.have.status(200);
-                    res.should.be.html;
                 });
         });
     });
@@ -85,7 +80,6 @@ describe('Testing', function () {
                 .get('/reports')
                 .then(function (res) {
                     res.should.have.status(200);
-                    res.should.be.html;
                 });
         });
     });
@@ -96,7 +90,6 @@ describe('Testing', function () {
                 .get('/logout')
                 .then((res) => {
                     res.should.have.status(200);
-                    res.should.be.html;
                 });
         });
     });

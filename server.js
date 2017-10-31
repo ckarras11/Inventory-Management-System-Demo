@@ -8,6 +8,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
+const exphbs = require('express-handlebars');
+const path = require('path');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const jsonParser = bodyParser.json();
 const { User } = require('./models/user');
@@ -15,10 +17,14 @@ const { User } = require('./models/user');
 // Password salt and hash
 const bcrypt = require('bcryptjs');
 
-
 // Initializing app
 const app = express();
 mongoose.Promise = global.Promise;
+
+// View Engine Setup
+app.set('views', path.join(__dirname, '/public/views'));
+app.engine('handlebars', exphbs({ defaultLayout: 'main', layoutsDir: `${__dirname}/public/views/layouts` }));
+app.set('view engine', 'handlebars');
 
 // Bodyparser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,14 +37,10 @@ app.use(express.static('public'));
 // Express session middleware
 app.use(session({
     secret: 'parker puppy',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
 }));
 
 // Passport Init
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Express Validator
 const { check, validationResult } = require('express-validator/check');
@@ -54,6 +56,8 @@ app.use(function (req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
+    res.locals.info_msg = req.flash('info_msg');
+    console.log(res.locals)
     next();
 });
 
@@ -72,16 +76,17 @@ app.use('/login', loginRouter);
 
 // Root Endpoint of App (Landing Page)
 app.get('/', (req, res) => {
-    res.sendFile(`${__dirname}/public/index.html`);
+    res.render('index');
 });
 
 // Login Screen
 app.get('/login', (req, res) => {
-    res.sendFile(`${__dirname}/public/views/login.html`);
+    res.render('login');
 });
+
 // Register
 app.get('/register', (req, res) => {
-    res.sendFile(`${__dirname}/public/views/register.html`);
+    res.render('register');
 });
 
 app.post('/register', (req, res) => {
@@ -100,7 +105,9 @@ app.post('/register', (req, res) => {
     if (errors) {
         console.log('yes')
         console.log(errors);
-        res.redirect('/register');
+        res.render('register', {
+            errors,
+        });
     } else {
         const newUser = new User();
         newUser.name = name;
@@ -108,40 +115,42 @@ app.post('/register', (req, res) => {
         newUser.email = email;
         newUser.password = newUser.generateHash(password);
         User
-            .create(newUser)
-            .then(res.redirect('/login'));
+            .create(newUser);
+
+        req.flash('success_msg', 'Success, You may now login');
+        res.redirect('/login');
     }
 });
 
 function isLoggedIn(req, res, next) {
-
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated()) {
         return next();
+    } else {
+        // if they aren't redirect them to the home page
+        console.log('not logged in');
+        res.redirect('/login');
     }
-
-    // if they aren't redirect them to the home page
-    console.log('not logged in');
-    res.redirect('/login');
 }
 // Home Endpoint
-app.get('/home', isLoggedIn, (req, res) => {
-    res.sendFile(`${__dirname}/public/views/home.html`);
+app.get('/home', (req, res) => {
+    res.render('home');
 });
 
 // Inventory Endpoint
 app.get('/inventory', (req, res) => {
-    res.sendFile(`${__dirname}/public/views/inventory.html`);
+    res.render('inventory');
 });
 
 // Reports Endpoint
 app.get('/reports', (req, res) => {
-    res.sendFile(`${__dirname}/public/views/reports.html`);
+    res.render('reports');
 });
 
 // Logout Endpoint (redirects back to login)
 app.get('/logout', (req, res) => {
     req.logout();
+    req.flash('info_msg', 'You are now logged out');
     res.redirect('/login');
 });
 
