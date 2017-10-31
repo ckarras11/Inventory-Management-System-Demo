@@ -29,8 +29,8 @@
                     <label for="vehicle-image">Image</label>
                     <input type="file" name="image" id="vehicle-image">
                     <label for="vehicle-name">Vehicle Name</label>
-                    <input type="text" name="vehicleName" placeholder="Van 01" id="vehicle-input" class="vehicle-input">
-                    <input type="submit" value="Submit" id="submit">
+                    <input type="text" name="vehicleName" placeholder="Van 01" id="vehicle-input" class="vehicle-input" required>
+                    <input type="submit" value="Submit" id="submit" >
                 </fieldset>
             </form>
         </div>
@@ -38,23 +38,23 @@
     <div class="addNewItem-modal" id="addNewItem-modal">
         <div class="modal-content">
             <span class="close" id="item-close">&times;</span>
-            <form name="additem" id="item-form" novalidate>
+            <form name="additem" id="item-form">
                 <fieldset class="item-form" >
                     <h2>Add New Item</h2>
                     <label for="image">Image</label>
                     <input type="file" name="image" id="item-image">
                     <label for="item">Item Name</label>
-                    <input type="text" name="item" placeholder="Rotella 15w40" id="item-input" class="item-input">
+                    <input type="text" name="item" placeholder="Rotella 15w40" id="item-input" class="item-input" required>
                     <label for="partNumber">Part Number</label>
-                    <input type="text" name="partNumber" placeholder="SLL-12345" id="partnumber-input" class="item-input">
+                    <input type="text" name="partNumber" placeholder="SLL-12345" id="partnumber-input" class="item-input" required>
                     <label for="listPrice">List Price</label>
-                    <input type="number" name="listPrice" placeholder="25.99" id="price-input" class="item-input">
+                    <input type="number" name="listPrice" placeholder="25.99" id="price-input" class="item-input" required>
                     <label for="quantityOnHand">Quantity On Hand</label>
-                    <input type="number" name="quantityOnHand" placeholder="12" id="quantity-input" class="item-input">
+                    <input type="number" name="quantityOnHand" placeholder="12" id="quantity-input" class="item-input" required>
                     <label for="reorderPoint">Minimum Amount</label>
-                    <input type="number" name="reorderPoint" placeholder="6" id="reorder-input" class="item-input">
+                    <input type="number" name="reorderPoint" placeholder="6" id="reorder-input" class="item-input" required>
                     <label for="vehicle_id">Vehicle Id</label>
-                    <input type="text" name="vehicle_id" placeholder="Van" id="vehicle_id" class="item-input">
+                    <input type="text" name="vehicle_id" placeholder="Van" id="vehicle_id" class="item-input" required> 
                     <input type="submit" value="Submit" id="submit">
                 </fieldset>
             </form>
