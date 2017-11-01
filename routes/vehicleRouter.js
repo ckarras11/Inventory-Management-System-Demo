@@ -35,14 +35,15 @@ router.post('/', jsonParser, (req, res) => {
             return res.status(400).send(message);
         }
     }
-   /*  Vehicle
+    Vehicle
         .find({ vehicleName: req.body.vehicleName })
         .then((vehicle) => {
-            if (vehicle) {
+            console.log(`===============>${vehicle.length}`);
+            if (vehicle.length !== 0) {
                 const message = 'Vehicle already exists';
                 return res.status(409).send(message);
             }
-        }); */
+        });
     Vehicle
         .create({
             vehicleName: req.body.vehicleName,
