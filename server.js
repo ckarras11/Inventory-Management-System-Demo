@@ -36,11 +36,14 @@ app.use(express.static('public'));
 
 // Express session middleware
 app.use(session({
-    secret: 'parker puppy',
+    secret: 'parkerpuppy',
+    resave: false,
+    saveUninitialized: false,
 }));
 
 // Passport Init
 app.use(passport.initialize());
+app.use(passport.session());
 
 // Express Validator
 const { check, validationResult } = require('express-validator/check');
@@ -133,17 +136,17 @@ function isLoggedIn(req, res, next) {
     }
 }
 // Home Endpoint
-app.get('/home', (req, res) => {
+app.get('/home', isLoggedIn, (req, res) => {
     res.render('home');
 });
 
 // Inventory Endpoint
-app.get('/inventory', (req, res) => {
+app.get('/inventory', isLoggedIn, (req, res) => {
     res.render('inventory');
 });
 
 // Reports Endpoint
-app.get('/reports', (req, res) => {
+app.get('/reports', isLoggedIn, (req, res) => {
     res.render('reports');
 });
 
