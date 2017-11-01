@@ -12,27 +12,27 @@ function getInventoryItems(callbackfn, vehicle) {
     });
 }
 
-// Initialized in inventory.html onload
-function getVehicles(callbackfn) {
-    $.ajax({
-        method: 'GET',
-        url: '/api/vehicle',
-        success: (data) => {
-            callbackfn(data);
-            editVehicle();
-        },
-    });
+// Displays inventory for chosen vehicle
+function displayInventoryItems(data, vehicle) {
+    const inventory = [];
+    for (index in data) {
+        if (data[index].vehicle_id === vehicle) {
+            inventory.push(data[index]);
+        }
+    }
+    if (inventory.length === 0) {
+        // alert('ohhh nooo');
+        $('#results').append('<h2 class="noItems">No items for current vehicle, use "add item" to create one</h2>');
+    } else {
+        inventory.forEach((item) => {
+            renderNewItem(item);
+        });
+    }
 }
 
-// Used to render a new vehicle when added
-function renderNewVehicle(vehicleData) {
-    $('#results').append(`<div class="item vehicle" id="${vehicleData.id}">
-                            <p>${vehicleData.vehicleName}</p>
-                            <div class="edit-vehicle">
-                                <span class="delete">&times;</span>
-                                <span class="edit">&#9998;</span>
-                            </div>
-                        </div>`);
+// Gets inventory items and displays inventory for a specific vehicle
+function getAndDisplayInventoryItems(vehicle) {
+    getInventoryItems(displayInventoryItems, vehicle);
 }
 
 // Used to render a new item when added
@@ -56,6 +56,78 @@ function renderNewItem(itemData) {
                         </div>`);
 }
 
+// Initialized in inventory.html onload
+function getVehicles(callbackfn) {
+    $.ajax({
+        method: 'GET',
+        url: '/api/vehicle',
+        success: (data) => {
+            callbackfn(data);
+            editVehicle();
+        },
+    });
+}
+
+// Called initally on inventory.html body load to display all vehicles
+function displayVehicle(data) {
+    for (index in data) {
+        renderNewVehicle(data[index]);
+    }
+}
+
+// Used to render a new vehicle when added
+function renderNewVehicle(vehicleData) {
+    $('#results').append(`<div class="item vehicle" id="${vehicleData.id}">
+                            <p>${vehicleData.vehicleName}</p>
+                            <div class="edit-vehicle">
+                                <span class="delete">&times;</span>
+                                <span class="edit">&#9998;</span>
+                            </div>
+                        </div>`);
+}
+
+// Vehicle Alerts
+function addVehicleAlert() {
+    $('#results').append('<div class="alert alert-success">Vehicle Added Succesfully</div>');
+    setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
+}
+
+function removeVehicleAlert() {
+    $('#results').append('<div class="alert alert-info">Vehicle Removed Succesfully</div>');
+    setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
+}
+
+function editVehicleAlert() {
+    $('#results').append('<div class="alert alert-info">Vehicle Updated</div>');
+    setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
+}
+
+function vehicleErrorAlert(message) {
+    $('#vehicle-form').prepend(`<div class="alert alert-danger">${message}</div>`);
+    setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 5000);
+}
+
+// Item Alerts
+function addItemAlert() {
+    $('#results').append('<div class="alert alert-success">Item Added Succesfully</div>');
+    setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
+}
+
+function removeItemAlert() {
+    $('#results').append('<div class="alert alert-info">Item Removed Succesfully</div>');
+    setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
+}
+
+function editItemAlert() {
+    $('#results').append('<div class="alert alert-info">Item Updated</div>');
+    setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
+}
+
+function itemErrorAlert() {
+    $('#item-form').prepend(`<div class="alert alert-danger">test</div>`);
+    // setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
+}
+
 // Submit handler for add item/vehicle form modal
 function formSubmitHandler(e) {
     e.preventDefault();
@@ -73,10 +145,15 @@ function formSubmitHandler(e) {
             success: (data) => {
                 hideVehicleModal();
                 renderNewVehicle(data);
+                addVehicleAlert();
+            },
+            error: (error) => {
+                if (error.responseText) {
+                    vehicleErrorAlert(error.responseText);
+                }
             },
         });
-    }
-    else {
+    } else {
         $.ajax({
             method: 'POST',
             url: '/api/inventory',
@@ -86,40 +163,10 @@ function formSubmitHandler(e) {
                 hideItemModal();
                 renderNewItem(data);
                 isVehicle = true;
+                addItemAlert();
             },
         });
     }
-}
-
-// Displays inventory for chosen vehicle
-function displayInventoryItems(data, vehicle) {
-    const inventory = [];
-    for (index in data) {
-        if (data[index].vehicle_id === vehicle) {
-            inventory.push(data[index]);
-        }
-    }
-    if (inventory.length === 0) {
-        // alert('ohhh nooo');
-        $('#results').append('<h2 class="noItems">No items for current vehicle, use "add item" to create one</h2>');
-    }
-    else {
-        inventory.forEach((item) => {
-            renderNewItem(item);
-        });
-    }
-}
-
-// Called initally on inventory.html body load to display all vehicles
-function displayVehicle(data) {
-    for (index in data) {
-        renderNewVehicle(data[index]);
-    }
-}
-
-// Gets inventory items and displays inventory for a specific vehicle
-function getAndDisplayInventoryItems(vehicle) {
-    getInventoryItems(displayInventoryItems, vehicle);
 }
 
 // Selects which vehicle to get inventory on
@@ -144,9 +191,8 @@ function reorderReport(data) {
     }
     itemsToReorder.sort(sortItem);
     if (itemsToReorder.length === 0) {
-        $('#reorder-list').append('No Items Below Reorder Point');
-    }
-    else {
+        $('#reorder-list').append('<div class="alert alert-info">No Items Below Reorder Point</div>');
+    } else {
         itemsToReorder.forEach(item => $('#reorder-list').append(`<li>${item.item} Quantity: ${item.quantityOnHand}, Reorder Point: ${item.reorderPoint} (${item.vehicle_id})</li>`));
     }
 }
@@ -198,7 +244,6 @@ function addVehicle() {
         isVehicle = true;
         $('#vehicle-form #vehicle-input').val('');
     });
-
     $('#vehicle-form').submit(formSubmitHandler);
 
     $('#vehicle-close').click(() => {
@@ -229,7 +274,6 @@ function selectItem() {
             url: `/api/inventory/${currentItemId}`,
             success: (data) => {
                 editItem(data);
-                // reason why multiple windows sets up handler each time
             },
         });
     });
@@ -246,6 +290,7 @@ function editVehicle() {
                 success: () => {
                     $(`#${currentVehicleId}`).remove();
                     currentVehicleId = '';
+                    removeVehicleAlert();
                 },
             });
         }
@@ -279,6 +324,14 @@ function editVehicle() {
                 $('.vehicle').remove();
                 getVehicles(displayVehicle);    
                 currentVehicleId = '';
+                editVehicleAlert();
+            },
+            error: (error) => {
+                if (error.responseJSON.length && error.responseJSON[0].msg) {
+                    $('#editVehicle-modal').find('#vehicle-form').prepend(`<div class="alert alert-danger">${error.responseJSON[0].msg}</div>`);
+                    setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 5000);
+                }
+                
             },
         });
     });
@@ -336,6 +389,8 @@ function editItem(data) {
                     $(`#${currentItemId}`).remove();
                     modal.style.display = 'none';
                     currentItemId = '';
+                    removeItemAlert()
+                    
                 },
             });
         }
@@ -377,6 +432,7 @@ function editItem(data) {
                 modal.style.display = 'none';
                 $('.jsEdit').remove();
                 getAndDisplayInventoryItems(vehicle);
+                editItemAlert()
             },
         });
     });
