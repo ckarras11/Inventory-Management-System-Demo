@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
 
 // Creates a new vehicle
 router.post('/', jsonParser, (req, res) => {
-    const requiredFields = ['vehicleName'];
+    const requiredFields = ['vehicleName', 'image'];
     for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];
         if (!(field in req.body)) {
@@ -46,6 +46,7 @@ router.post('/', jsonParser, (req, res) => {
         });
     Vehicle
         .create({
+            image: req.body.image,
             vehicleName: req.body.vehicleName,
         })
         .then(vehicle => res.status(201).json(vehicle.apiRepr()))
@@ -63,7 +64,7 @@ router.put('/:id', (req, res) => {
         });
     }
     const updated = {};
-    const updateableFields = ['vehicleName'];
+    const updateableFields = ['vehicleName', 'image'];
     updateableFields.forEach((field) => {
         if (field in req.body) {
             updated[field] = req.body[field];

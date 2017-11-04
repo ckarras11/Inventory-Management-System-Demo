@@ -22,6 +22,7 @@ function seedData() {
 
 function generateData() {
     return {
+        image: faker.name.lastName(),
         vehicleName: faker.name.firstName(),
     };
 }
