@@ -25,7 +25,7 @@ function displayInventoryItems(data, vehicle) {
         $('#results').append('<h2 class="noItems">No items for current vehicle, use "add item" to create one</h2>');
     } else {
         inventory.forEach((item) => {
-            renderNewItem(item);
+            renderNewItem(item); 
         });
     }
 }
