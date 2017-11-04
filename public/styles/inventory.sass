@@ -1,29 +1,36 @@
 .vehicle
     cursor: pointer
-    p
-        margin-bottom: 80px
 
 .vehicle:hover
-    //background-color:  #dadee5
+    background-color:  #dadee5
 
 .edit-vehicle
     display: flex
     justify-content: space-around
+    width: 100%
+    flex-direction: row
 
 .delete
     color: red
+    font-size: 20px
 
 .delete:hover
-    font-size: 24px
+    font-size: 24px 
     
 .edit:hover
     font-size: 24px
 
 .item
     cursor: pointer
+    background-color: #DADADA
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+
 
 .item:hover
-    border: solid red 4px
+    border: solid $buttonColor 4px
 
 @media (min-width: 775px)
     .item
@@ -33,6 +40,10 @@
         margin: 15px
         height: 150px
         text-align: center
+    .item-form
+        input
+            width: 60%
+
 
 @media (max-width: 775px)
     .item
@@ -42,6 +53,9 @@
         margin: 15px
         height: 150px
         text-align: center
+    .item-form
+        input
+            width: 60%
 
 @media (max-width: 450px)
     .item
@@ -51,11 +65,17 @@
         margin: 15px
         height: 150px
         text-align: center
+    .width-50
+        width: 80% !important
+    .sidebar
+        ul
+            padding: 10px 0px 10px 0px
 
 .picture
-    img
-        width: 50px
         margin-top: 5px
+        img
+            height: 50px
+            margin-top: 5px
 
 .iteminfo
     p
@@ -64,9 +84,15 @@
 
 .add
     cursor: pointer
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 50px
+    color: #1ABB89
 
-.add:hover
+.add:hover:after
     background-color: #dadee5
+    content: "Add"
     
 .addNewVehicle-modal, .addNewItem-modal, .editItem-modal, .editVehicle-modal
     display: none
@@ -81,15 +107,17 @@
     background-color: rgba(0,0,0,0.4)
 
 .modal-content
-    background-color: #fefefe
+    background-color: $formGrey
     margin: 15% auto
     padding: 20px
     border: solid black 1px
     border-radius: 5px
-    width: 80%
+
+.width-50
+    width: 50%
 
 .close
-    color: #aaa
+    color: $dsRed
     float: right
     font-size: 28px
     font-weight: bold
@@ -101,29 +129,37 @@
 
 .vehicle-form
     display: flex
-    border: solid black 1px
-    h2
-        text-align: center
-        margin: 20px
-    
+    flex-direction: column
+    align-items: flex-start
     label
         margin-bottom: 10px
     
     input
-        margin-bottom: 10px      
+        margin-bottom: 10px    
+
+.add-submit
+    margin-top: 20px
+    margin-bottom: 15px
+    padding: 5px
+    border: solid black 1px
+    border-radius: 5px
+    background-color: $buttonColor
+    color: white
+    font-size: 18px
 
 .item-form
     display: flex
-    border: solid black 1px
+    flex-direction: column
+    align-items: flex-start
     h2
-        text-align: center
-        margin: 20px
+        margin: auto
     
     label
         margin-bottom: 10px
     
     input
         margin-bottom: 10px
+        padding: 4px
 
 .js-hide-display
     display: none

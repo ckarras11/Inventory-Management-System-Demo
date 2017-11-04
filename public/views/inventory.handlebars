@@ -13,36 +13,39 @@
         </nav>
         <div id="results" class="results">
             <div class="add item" id="add-vehicle">
-                    <p>add vehicle</p>
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
             </div>
             <div class="add item js-hide-display" id="add-item">
-                <p>add item</p>
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
             </div>
         </div>
     </section>
     <div class="addNewVehicle-modal" id="addNewVehicle-modal">
-        <div class="modal-content">
+        <div class="modal-content width-50">
             <span class="close" id="vehicle-close">&times;</span>
             <form name="addvehicle" id="vehicle-form" action="/api/vehicle">
-                <fieldset class="vehicle-form" >
-                    <h2>Add New Vehicle</h2>
-                    <label for="vehicle-image">Image</label>
-                    <input type="file" name="image" id="vehicle-image">
-                    <label for="vehicle-name">Vehicle Name</label>
-                    <input type="text" name="vehicleName" placeholder="Van 01" id="vehicle-input" class="vehicle-input" required>
-                    <input type="submit" value="Submit" id="submit" >
-                </fieldset>
+                    <div class="vehicle-form">
+                        <h2>Add New Vehicle</h2>
+                        <label for="vehicle-image">Image</label>
+                        <select name="image">
+                            <option value="building">Building</option>
+                            <option value="truck">Truck</option>
+                            <option value="van">Van</option>
+                        </select>
+                        <br>
+                        <label for="vehicle-name">Vehicle Name</label>
+                        <input type="text" name="vehicleName" placeholder="Van 01" id="vehicle-input" class="vehicle-input" required>
+                        <input type="submit" value="Submit" id="submit" class="add-submit">
+                    </div>
             </form>
         </div>
     </div>
     <div class="addNewItem-modal" id="addNewItem-modal">
-        <div class="modal-content">
+        <div class="modal-content width-50">
             <span class="close" id="item-close">&times;</span>
             <form name="additem" id="item-form">
-                <fieldset class="item-form" >
+                <div class="item-form">
                     <h2>Add New Item</h2>
-                    <label for="image">Image</label>
-                    <input type="file" name="image" id="item-image">
                     <label for="item">Item Name</label>
                     <input type="text" name="item" placeholder="Rotella 15w40" id="item-input" class="item-input" required>
                     <label for="partNumber">Part Number</label>
@@ -55,8 +58,8 @@
                     <input type="number" name="reorderPoint" placeholder="6" id="reorder-input" class="item-input" required>
                     <label for="vehicle_id">Vehicle Id</label>
                     <input type="text" name="vehicle_id" placeholder="Van" id="vehicle_id" class="item-input" required> 
-                    <input type="submit" value="Submit" id="submit">
-                </fieldset>
+                    <input type="submit" value="Submit" id="submit" class="add-submit">
+                </div>
             </form>
         </div>
     </div>
