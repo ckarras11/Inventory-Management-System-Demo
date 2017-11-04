@@ -191,6 +191,7 @@ function selectVehicle() {
         $('.vehicle').addClass('js-hide-display');
         $('#add-item').removeClass('js-hide-display');
         $('#add-vehicle').addClass('js-hide-display');
+        $('#item-form #vehicle_id').val($(this).find('p')[0].innerHTML)
         getAndDisplayInventoryItems($(this).find('p')[0].innerHTML);
     });
 }
@@ -201,7 +202,6 @@ function reorderReport(data) {
     for (index in data) {
         if (data[index].quantityOnHand < data[index].reorderPoint) {
             itemsToReorder.push(data[index]);
-            // $('#reorder-list').append(`<li>${data[index].item} Quantity: ${data[index].quantityOnHand}, Reorder Point: ${data[index].reorderPoint}</li>`);
         }
     }
     itemsToReorder.sort(sortItem);
@@ -390,8 +390,8 @@ function editItem(data) {
                                         <h3>Vehicle Id</h3>
                                         <p>${data.vehicle_id}</p>
                                     </div>
-                                    <button id="deleteButton">DELETE</button>
-                                    <button id="editButton">EDIT</button>
+                                    <button id="deleteButton" class="button">DELETE</button>
+                                    <button id="editButton" class="button">EDIT</button>
                                 </div>
 
                             </div>`);
