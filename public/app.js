@@ -77,28 +77,41 @@ function displayVehicle(data) {
 
 // Used to render a new vehicle when added
 function renderNewVehicle(vehicleData) {
+    let vehicleImage
+    if (vehicleData.image === 'truck') {
+        vehicleImage = './images/truck_icon.png';
+    } else if (vehicleData.image === 'van') {
+        vehicleImage = './images/van_icon.png';
+    } else {
+        vehicleImage = './images/building_icon.png';
+    }
+
+ 
     $('#results').append(`<div class="item vehicle" id="${vehicleData.id}">
+                            <div class="picture">
+                                <img src="${vehicleImage}">
+                            </div>  
                             <p>${vehicleData.vehicleName}</p>
                             <div class="edit-vehicle">
                                 <span class="delete">&times;</span>
-                                <span class="edit">&#9998;</span>
+                                <span class="edit" data-vehicle="${vehicleData.vehicleName}">&#9998;</span>
                             </div>
                         </div>`);
 }
 
 // Vehicle Alerts
 function addVehicleAlert() {
-    $('#results').append('<div class="alert alert-success">Vehicle Added Succesfully</div>');
+    $('.title').append('<div class="alert alert-success">Vehicle Added Succesfully</div>');
     setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
 }
 
 function removeVehicleAlert() {
-    $('#results').append('<div class="alert alert-info">Vehicle Removed Succesfully</div>');
+    $('.title').append('<div class="alert alert-info">Vehicle Removed Succesfully</div>');
     setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
 }
 
 function editVehicleAlert() {
-    $('#results').append('<div class="alert alert-info">Vehicle Updated</div>');
+    $('.title').append('<div class="alert alert-info">Vehicle Updated</div>');
     setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
 }
 
@@ -109,17 +122,17 @@ function vehicleErrorAlert(message) {
 
 // Item Alerts
 function addItemAlert() {
-    $('#results').append('<div class="alert alert-success">Item Added Succesfully</div>');
+    $('.title').append('<div class="alert alert-success">Item Added Succesfully</div>');
     setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
 }
 
 function removeItemAlert() {
-    $('#results').append('<div class="alert alert-info">Item Removed Succesfully</div>');
+    $('.title').append('<div class="alert alert-info">Item Removed Succesfully</div>');
     setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
 }
 
 function editItemAlert() {
-    $('#results').append('<div class="alert alert-info">Item Updated</div>');
+    $('.title').append('<div class="alert alert-info">Item Updated</div>');
     setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
 }
 
@@ -133,6 +146,7 @@ function formSubmitHandler(e) {
     e.preventDefault();
     const form = $(this);
     const formData = new FormData(this);
+    console.log(formData);
 
     const keys = Array.from(formData.keys());
     const data = keys.map(key => `${key}=${encodeURIComponent(formData.get(key))}`).join('&');
@@ -143,6 +157,7 @@ function formSubmitHandler(e) {
             url: '/api/vehicle',
             data,
             success: (data) => {
+                console.log(data);
                 hideVehicleModal();
                 renderNewVehicle(data);
                 addVehicleAlert();
@@ -239,6 +254,7 @@ function hideEditVehicleModal() {
 // Handles adding a vehicle and displaying the modal
 function addVehicle() {
     $('#add-vehicle').click(() => {
+        $('#vehicle-form h2').text('Add Vehicle');
         let modal = document.getElementById('addNewVehicle-modal');
         modal.style.display = 'block';
         isVehicle = true;
@@ -297,8 +313,9 @@ function editVehicle() {
     });
     $('#results').on('click', '.edit', function (e) {
         e.stopPropagation();
+        const currentVehicle = $(e.currentTarget).data('vehicle');
+        console.log(currentVehicle);
         currentVehicleId = this.parentNode.parentNode.getAttribute('id');
-        let currentVehicle = this.parentNode.parentNode.firstChild.nextSibling.innerHTML;
         let modal = document.getElementById('editVehicle-modal');
         let vehicleModal = $('#addNewVehicle-modal')[0].innerHTML;
         modal.style.display = 'block';
@@ -348,7 +365,7 @@ function editItem(data) {
     let currentItemId = data.id;
     let vehicle = data.vehicle_id;
     $('#editItem-modal').html(`
-                            <div class="modal-content">
+                            <div class="modal-content width-50">
                                 <span class="close" id="editItem-close">&times;</span>
                                 <div id="modal-form-container"></div>
                                 <div class="item-modal">
