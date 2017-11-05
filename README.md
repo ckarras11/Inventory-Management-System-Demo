@@ -33,6 +33,8 @@ The inventory page displays a list of vehicles/locations and also allows a user 
 ## Reports Page
 The reports page compares current inventory quantity to the reorder point set on each item.  All items with a quantity below the reorder point are then displayed in a ordered list.
 
+![image](https://user-images.githubusercontent.com/30561347/32411297-a2dad8ba-c1ad-11e7-91e9-8f0cb5bd9d22.png)
+
 ## Technologies Used
 ### Client Side
 * Handlebars
