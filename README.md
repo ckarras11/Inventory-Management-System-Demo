@@ -26,6 +26,10 @@ The home page gives a broad overview of the use of the application.  The navigat
 ## Inventory Page
 The inventory page displays a list of vehicles/locations and also allows a user to create a new one.  Clicking on a specific vehicle will get the inventory for that specific vehicle.  Both vehicle and items support all CRUD operations.
 
+![image](https://user-images.githubusercontent.com/30561347/32411280-4e5b7538-c1ad-11e7-8db8-db9777b763c2.png)
+
+![image](https://user-images.githubusercontent.com/30561347/32411281-4e67dce2-c1ad-11e7-845f-1eebb3ab60cf.png)
+
 ## Reports Page
 The reports page compares current inventory quantity to the reorder point set on each item.  All items with a quantity below the reorder point are then displayed in a ordered list.
 
