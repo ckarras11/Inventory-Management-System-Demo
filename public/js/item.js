@@ -51,8 +51,7 @@ function renderNewItem(itemData) {
 // Handles adding an item and displaying the modal
 function addItem() {
     $('#add-item').click(() => {
-        let modal = document.getElementById('addNewItem-modal');
-        modal.style.display = 'block';
+        showItemModal();
         isVehicle = false;
     });
     $('#item-form').submit(formSubmitHandler);
@@ -79,7 +78,6 @@ function selectItem() {
 }
 // Displays item modal with all the information from the DB
 function renderItemModal(data) {
-    let modal = document.getElementById('editItem-modal');
     $('#editItem-modal').html(`
                                 <div class="modal-content width-50">
                                     <span class="close" id="editItem-close">&times;</span>
@@ -111,17 +109,15 @@ function renderItemModal(data) {
                                     </div>
 
                                 </div>`);
-    modal.style.display = 'block';
-
+    showEditItemModal();
     $('#editItem-modal').on('click', '#editItem-close', function () {
-        modal.style.display = 'none';
+        hideEditItemModal();
         $('#editItem-modal').empty();
     });
 }
 
 
 function deleteItem(data) {
-    let modal = document.getElementById('editItem-modal');
     $('#editItem-modal').off('click', '#deleteButton').on('click', '#deleteButton', function () {
         if (confirm('Are you sure you want to delete this item?') === true) {
             $.ajax({
@@ -134,18 +130,17 @@ function deleteItem(data) {
                 },
             });
         } else {
-            modal.style.display = 'none';
+            hideEditItemModal();
         }
     });
 }
 function editItem(data) {
-    let modal = document.getElementById('editItem-modal');
-    let currentItemId = data.id;
-    let vehicle = data.vehicle_id;
+    const currentItemId = data.id;
+    const vehicle = data.vehicle_id;
 
     $('#editItem-modal').off('click', '#editButton').on('click', '#editButton', function () {
         $('.item-modal').hide();
-        let itemForm = $('#item-form')[0].outerHTML;
+        const itemForm = $('#item-form')[0].outerHTML;
         $('#modal-form-container').append(itemForm);
         $('#modal-form-container #item-form h2').text('Edit Item');
         $('#modal-form-container #item-input').val(`${data.item}`);
@@ -158,7 +153,7 @@ function editItem(data) {
 
     $('#modal-form-container').on('submit', '#item-form', (e) => {
         e.preventDefault();
-        let updatedItem = {
+        const updatedItem = {
             id: currentItemId,
             image: $(event.target).find('#item-image').val(),
             item: $(event.target).find('#item-input').val(),
@@ -173,10 +168,10 @@ function editItem(data) {
             url: `/api/inventory/${currentItemId}`,
             data: updatedItem,
             success: () => {
-                modal.style.display = 'none';
+                hideEditItemModal();
                 $('.jsEdit').remove();
                 getAndDisplayInventoryItems(vehicle);
-                editItemAlert()
+                editItemAlert();
             },
         });
     });

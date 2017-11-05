@@ -35,10 +35,6 @@ function editItemAlert() {
     setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
 }
 
-function itemErrorAlert() {
-    $('#item-form').prepend(`<div class="alert alert-danger">test</div>`);
-}
-
 let isVehicle = true;
 
 // Submit handler for add item/vehicle form modal
@@ -82,21 +78,47 @@ function formSubmitHandler(e) {
         });
     }
 }
+// Add Vehicle Modal
+function showVehicleModal() {
+    const modal = document.getElementById('addNewVehicle-modal');
+    modal.style.display = 'block';
+}
 
-// Hides vehicle modal on form submit or exit
 function hideVehicleModal() {
-    let modal = document.getElementById('addNewVehicle-modal');
+    const modal = document.getElementById('addNewVehicle-modal');
     modal.style.display = 'none';
 }
 
-// Hides item modal on form submit or exit
+// Add Item modal
+function showItemModal() {
+    const modal = document.getElementById('addNewItem-modal');
+    modal.style.display = 'block';
+}
+
 function hideItemModal() {
-    let modal = document.getElementById('addNewItem-modal');
+    const modal = document.getElementById('addNewItem-modal');
     modal.style.display = 'none';
+}
+
+// Edit Vehicle Modal
+function showEditVehicleModal() {
+    const modal = document.getElementById('editVehicle-modal');
+    modal.style.display = 'block';
 }
 
 function hideEditVehicleModal() {
-    let modal = document.getElementById('editVehicle-modal');
+    const modal = document.getElementById('editVehicle-modal');
+    modal.style.display = 'none';
+}
+
+// Edit Item Modal
+function showEditItemModal() {
+    const modal = document.getElementById('editItem-modal');
+    modal.style.display = 'block';
+}
+
+function hideEditItemModal() {
+    const modal = document.getElementById('editItem-modal');
     modal.style.display = 'none';
 }
 
@@ -160,8 +182,7 @@ function renderNewItem(itemData) {
 // Handles adding an item and displaying the modal
 function addItem() {
     $('#add-item').click(() => {
-        let modal = document.getElementById('addNewItem-modal');
-        modal.style.display = 'block';
+        showItemModal();
         isVehicle = false;
     });
     $('#item-form').submit(formSubmitHandler);
@@ -188,7 +209,6 @@ function selectItem() {
 }
 // Displays item modal with all the information from the DB
 function renderItemModal(data) {
-    let modal = document.getElementById('editItem-modal');
     $('#editItem-modal').html(`
                                 <div class="modal-content width-50">
                                     <span class="close" id="editItem-close">&times;</span>
@@ -220,17 +240,15 @@ function renderItemModal(data) {
                                     </div>
 
                                 </div>`);
-    modal.style.display = 'block';
-
+    showEditItemModal();
     $('#editItem-modal').on('click', '#editItem-close', function () {
-        modal.style.display = 'none';
+        hideEditItemModal();
         $('#editItem-modal').empty();
     });
 }
 
 
 function deleteItem(data) {
-    let modal = document.getElementById('editItem-modal');
     $('#editItem-modal').off('click', '#deleteButton').on('click', '#deleteButton', function () {
         if (confirm('Are you sure you want to delete this item?') === true) {
             $.ajax({
@@ -239,23 +257,21 @@ function deleteItem(data) {
                 success: () => {
                     $(`#${data.id}`).remove();
                     modal.style.display = 'none';
-                   // currentItemId = '';
                     removeItemAlert();
                 },
             });
         } else {
-            modal.style.display = 'none';
+            hideEditItemModal();
         }
     });
 }
 function editItem(data) {
-    let modal = document.getElementById('editItem-modal');
-    let currentItemId = data.id;
-    let vehicle = data.vehicle_id;
+    const currentItemId = data.id;
+    const vehicle = data.vehicle_id;
 
     $('#editItem-modal').off('click', '#editButton').on('click', '#editButton', function () {
         $('.item-modal').hide();
-        let itemForm = $('#item-form')[0].outerHTML;
+        const itemForm = $('#item-form')[0].outerHTML;
         $('#modal-form-container').append(itemForm);
         $('#modal-form-container #item-form h2').text('Edit Item');
         $('#modal-form-container #item-input').val(`${data.item}`);
@@ -268,7 +284,7 @@ function editItem(data) {
 
     $('#modal-form-container').on('submit', '#item-form', (e) => {
         e.preventDefault();
-        let updatedItem = {
+        const updatedItem = {
             id: currentItemId,
             image: $(event.target).find('#item-image').val(),
             item: $(event.target).find('#item-input').val(),
@@ -283,16 +299,15 @@ function editItem(data) {
             url: `/api/inventory/${currentItemId}`,
             data: updatedItem,
             success: () => {
-                modal.style.display = 'none';
+                hideEditItemModal();
                 $('.jsEdit').remove();
                 getAndDisplayInventoryItems(vehicle);
-                editItemAlert()
+                editItemAlert();
             },
         });
     });
-
-    
 }
+
 // Gets all items below reorder point and displays them as a <ol>
 function reorderReport(data) {
     const itemsToReorder = [];
@@ -330,6 +345,7 @@ function runReport() {
         getInventoryItems(reorderReport);
     });
 }
+
 // Initialized in inventory.html onload
 function getVehicles(callbackfn) {
     $.ajax({
@@ -352,7 +368,7 @@ function displayVehicle(data) {
 
 // Used to render a new vehicle when added
 function renderNewVehicle(vehicleData) {
-    let vehicleImage
+    let vehicleImage;
     if (vehicleData.image === 'truck') {
         vehicleImage = './images/truck_icon.png';
     } else if (vehicleData.image === 'van') {
@@ -379,7 +395,7 @@ function selectVehicle() {
         $('.vehicle').addClass('js-hide-display');
         $('#add-item').removeClass('js-hide-display');
         $('#add-vehicle').addClass('js-hide-display');
-        $('#item-form #vehicle_id').val($(this).find('p')[0].innerHTML)
+        $('#item-form #vehicle_id').val($(this).find('p')[0].innerHTML);
         getAndDisplayInventoryItems($(this).find('p')[0].innerHTML);
     });
 }
@@ -388,8 +404,7 @@ function selectVehicle() {
 function addVehicle() {
     $('#add-vehicle').click(() => {
         $('#vehicle-form h2').text('Add Vehicle');
-        let modal = document.getElementById('addNewVehicle-modal');
-        modal.style.display = 'block';
+        showVehicleModal();
         isVehicle = true;
         $('#vehicle-form #vehicle-input').val('');
     });
@@ -419,16 +434,14 @@ function deleteVehicle() {
 }
 
 function editVehicle() {
-    let currentVehicleId = ''; 
+    let currentVehicleId = '';
     // Handles Edit Button
     $('#results').on('click', '.edit', function (e) {
         e.stopPropagation();
+        showEditVehicleModal();
         const currentVehicle = $(e.currentTarget).data('vehicle');
-        console.log(currentVehicle);
         currentVehicleId = this.parentNode.parentNode.getAttribute('id');
-        let modal = document.getElementById('editVehicle-modal');
-        let vehicleModal = $('#addNewVehicle-modal')[0].innerHTML;
-        modal.style.display = 'block';
+        const vehicleModal = $('#addNewVehicle-modal')[0].innerHTML;
         $('#editVehicle-modal').html(vehicleModal);
         $('#vehicle-form h2').text('Edit Vehicle');
         $('#vehicle-form #vehicle-input').val(currentVehicle);
@@ -446,7 +459,7 @@ function editVehicle() {
 
 function editSubmitHandler(e, currentVehicleId) {
     e.preventDefault();
-    let updatedVehicle = {
+    const updatedVehicle = {
         id: currentVehicleId,
         image: $(event.target).find('#vehicle-image').val(),
         vehicleName: $(event.target).find('#vehicle-input').val(),
@@ -459,7 +472,6 @@ function editSubmitHandler(e, currentVehicleId) {
             hideEditVehicleModal();
             $('.vehicle').remove();
             getVehicles(displayVehicle);
-            currentVehicleId = '';
             editVehicleAlert();
         },
         error: (error) => {

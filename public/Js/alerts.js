@@ -34,7 +34,3 @@ function editItemAlert() {
     $('.title').append('<div class="alert alert-info">Item Updated</div>');
     setTimeout(function () { $('.alert').addClass('js-hide-display'); }, 2000);
 }
-
-function itemErrorAlert() {
-    $('#item-form').prepend(`<div class="alert alert-danger">test</div>`);
-}

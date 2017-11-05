@@ -41,21 +41,47 @@ function formSubmitHandler(e) {
         });
     }
 }
+// Add Vehicle Modal
+function showVehicleModal() {
+    const modal = document.getElementById('addNewVehicle-modal');
+    modal.style.display = 'block';
+}
 
-// Hides vehicle modal on form submit or exit
 function hideVehicleModal() {
-    let modal = document.getElementById('addNewVehicle-modal');
+    const modal = document.getElementById('addNewVehicle-modal');
     modal.style.display = 'none';
 }
 
-// Hides item modal on form submit or exit
+// Add Item modal
+function showItemModal() {
+    const modal = document.getElementById('addNewItem-modal');
+    modal.style.display = 'block';
+}
+
 function hideItemModal() {
-    let modal = document.getElementById('addNewItem-modal');
+    const modal = document.getElementById('addNewItem-modal');
     modal.style.display = 'none';
+}
+
+// Edit Vehicle Modal
+function showEditVehicleModal() {
+    const modal = document.getElementById('editVehicle-modal');
+    modal.style.display = 'block';
 }
 
 function hideEditVehicleModal() {
-    let modal = document.getElementById('editVehicle-modal');
+    const modal = document.getElementById('editVehicle-modal');
+    modal.style.display = 'none';
+}
+
+// Edit Item Modal
+function showEditItemModal() {
+    const modal = document.getElementById('editItem-modal');
+    modal.style.display = 'block';
+}
+
+function hideEditItemModal() {
+    const modal = document.getElementById('editItem-modal');
     modal.style.display = 'none';
 }
 
