@@ -20,7 +20,7 @@ function displayVehicle(data) {
 
 // Used to render a new vehicle when added
 function renderNewVehicle(vehicleData) {
-    let vehicleImage
+    let vehicleImage;
     if (vehicleData.image === 'truck') {
         vehicleImage = './images/truck_icon.png';
     } else if (vehicleData.image === 'van') {
@@ -47,7 +47,7 @@ function selectVehicle() {
         $('.vehicle').addClass('js-hide-display');
         $('#add-item').removeClass('js-hide-display');
         $('#add-vehicle').addClass('js-hide-display');
-        $('#item-form #vehicle_id').val($(this).find('p')[0].innerHTML)
+        $('#item-form #vehicle_id').val($(this).find('p')[0].innerHTML);
         getAndDisplayInventoryItems($(this).find('p')[0].innerHTML);
     });
 }
@@ -56,8 +56,7 @@ function selectVehicle() {
 function addVehicle() {
     $('#add-vehicle').click(() => {
         $('#vehicle-form h2').text('Add Vehicle');
-        let modal = document.getElementById('addNewVehicle-modal');
-        modal.style.display = 'block';
+        showVehicleModal();
         isVehicle = true;
         $('#vehicle-form #vehicle-input').val('');
     });
@@ -87,16 +86,14 @@ function deleteVehicle() {
 }
 
 function editVehicle() {
-    let currentVehicleId = ''; 
+    let currentVehicleId = '';
     // Handles Edit Button
     $('#results').on('click', '.edit', function (e) {
         e.stopPropagation();
+        showEditVehicleModal();
         const currentVehicle = $(e.currentTarget).data('vehicle');
-        console.log(currentVehicle);
         currentVehicleId = this.parentNode.parentNode.getAttribute('id');
-        let modal = document.getElementById('editVehicle-modal');
-        let vehicleModal = $('#addNewVehicle-modal')[0].innerHTML;
-        modal.style.display = 'block';
+        const vehicleModal = $('#addNewVehicle-modal')[0].innerHTML;
         $('#editVehicle-modal').html(vehicleModal);
         $('#vehicle-form h2').text('Edit Vehicle');
         $('#vehicle-form #vehicle-input').val(currentVehicle);
@@ -114,7 +111,7 @@ function editVehicle() {
 
 function editSubmitHandler(e, currentVehicleId) {
     e.preventDefault();
-    let updatedVehicle = {
+    const updatedVehicle = {
         id: currentVehicleId,
         image: $(event.target).find('#vehicle-image').val(),
         vehicleName: $(event.target).find('#vehicle-input').val(),
@@ -127,7 +124,6 @@ function editSubmitHandler(e, currentVehicleId) {
             hideEditVehicleModal();
             $('.vehicle').remove();
             getVehicles(displayVehicle);
-            currentVehicleId = '';
             editVehicleAlert();
         },
         error: (error) => {
