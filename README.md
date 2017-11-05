@@ -16,6 +16,8 @@ This is where a user can create a new account.  Since the software is used for a
 ## Login Page
 Here a user may login if they have already created an account.  The user is authenticated with ``passport.js`` and the password handled by ``bcryptjs``.  When a user is succesfully authenticated the authentication is stored in a session so the user can access protected routes.
 
+![image](https://user-images.githubusercontent.com/30561347/32411269-d7666a82-c1ac-11e7-97f5-19a298842abc.png)
+
 ## Home Page
 The home page gives a broad overview of the use of the application.  The navigation bar on the right side allows the user to navigate to inventory or reports.  The logout button ends the session.
 
