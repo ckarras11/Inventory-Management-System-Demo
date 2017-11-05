@@ -16,7 +16,7 @@ Here a user may login if they have already created an account.  The user is auth
 The home page gives a broad overview of the use of the application.  The navigation bar on the right side allows the user to navigate to inventory or reports.  The logout button ends the session.
 
 ## Inventory Page
-
+The inventory page displays a list of vehicles/locations and also allows a user to create a new one.  Clicking on a specific vehicle will get the inventory for that specific vehicle.  Both vehicle and items support all CRUD operations.
 
 ## Reports Page
 The reports page compares current inventory quantity to the reorder point set on each item.  All items with a quantity below the reorder point are then displayed in a ordered list.
