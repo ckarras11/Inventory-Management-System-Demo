@@ -5,9 +5,13 @@ This application was designed for a small company to use as an inventory managem
 
 ## Landing Page
 The landing page is there to direct a user to either a register page (if the user does not have an account) or a login page (if the user is already registered)
+
 ![image](https://user-images.githubusercontent.com/30561347/32411225-458efe08-c1ac-11e7-90bd-1cd53d4e6717.png)
+
 ## Register Page
 This is where a user can create a new account.  Since the software is used for a specific companies inventory a company code is required to create an account.  When all the information is entered and validated on the server side, the password is then salted and hashed with ``bcryptjs`` and all of the information is stored on the db.  The user is redirected to the login page where they can use their new credentials to login.
+
+![image](https://user-images.githubusercontent.com/30561347/32411262-a761c868-c1ac-11e7-97e7-42909e0278e9.png)
 
 ## Login Page
 Here a user may login if they have already created an account.  The user is authenticated with ``passport.js`` and the password handled by ``bcryptjs``.  When a user is succesfully authenticated the authentication is stored in a session so the user can access protected routes.
