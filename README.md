@@ -52,3 +52,5 @@ The reports page compares current inventory quantity to the reorder point set on
 
 ## Responsive Design
 This page was made responsive using ``flexbox`` and ``@media querys``
+
+![image](https://user-images.githubusercontent.com/30561347/32411317-fcc2015a-c1ad-11e7-9e89-dcfe8b67db86.png)
