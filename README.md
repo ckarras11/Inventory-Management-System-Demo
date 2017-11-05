@@ -21,6 +21,8 @@ Here a user may login if they have already created an account.  The user is auth
 ## Home Page
 The home page gives a broad overview of the use of the application.  The navigation bar on the right side allows the user to navigate to inventory or reports.  The logout button ends the session.
 
+![image](https://user-images.githubusercontent.com/30561347/32411274-0790a7f4-c1ad-11e7-9818-22ccd8f88d15.png)
+
 ## Inventory Page
 The inventory page displays a list of vehicles/locations and also allows a user to create a new one.  Clicking on a specific vehicle will get the inventory for that specific vehicle.  Both vehicle and items support all CRUD operations.
 
