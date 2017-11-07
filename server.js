@@ -15,7 +15,8 @@ const { User } = require('./models/user');
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const jsonParser = bodyParser.json();
 
-
+// Config Files
+const { SECRET } = require('./config');
 // Password salt and hash
 const bcrypt = require('bcryptjs');
 
@@ -69,7 +70,7 @@ app.use(function (req, res, next) {
 app.use(morgan('common'));
 
 // Routers and modules
-const { DATABASE_URL, PORT, SECRET } = require('./config');
+const { DATABASE_URL, PORT } = require('./config');
 const inventoryRouter = require('./routes/inventoryRouter');
 const vehicleRouter = require('./routes/vehicleRouter');
 const loginRouter = require('./routes/loginRouter');
