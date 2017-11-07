@@ -7,3 +7,7 @@ exports.TEST_DATABASE_URL = (
     'mongodb://localhost/test-Inventory-Management-System');
 
 exports.PORT = process.env.PORT || 8080;
+
+exports.CODE = process.env.CODE;
+
+exports.SECRET = process.env.SECRET;

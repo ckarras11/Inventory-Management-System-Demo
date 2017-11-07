@@ -10,9 +10,11 @@ const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const exphbs = require('express-handlebars');
 const path = require('path');
+const { User } = require('./models/user');
+
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const jsonParser = bodyParser.json();
-const { User } = require('./models/user');
+
 
 // Password salt and hash
 const bcrypt = require('bcryptjs');
@@ -36,7 +38,7 @@ app.use(express.static('public'));
 
 // Express session middleware
 app.use(session({
-    secret: 'parkerpuppy',
+    secret: SECRET,
     resave: false,
     saveUninitialized: false,
 }));
@@ -60,7 +62,6 @@ app.use(function (req, res, next) {
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
     res.locals.info_msg = req.flash('info_msg');
-    console.log(res.locals)
     next();
 });
 
@@ -68,14 +69,27 @@ app.use(function (req, res, next) {
 app.use(morgan('common'));
 
 // Routers and modules
-const { DATABASE_URL, PORT } = require('./config');
+const { DATABASE_URL, PORT, SECRET } = require('./config');
 const inventoryRouter = require('./routes/inventoryRouter');
 const vehicleRouter = require('./routes/vehicleRouter');
 const loginRouter = require('./routes/loginRouter');
+const registerRouter = require('./routes/registerRouter');
 
 app.use('/api/inventory', inventoryRouter);
 app.use('/api/vehicle', vehicleRouter);
 app.use('/login', loginRouter);
+app.use('/register', registerRouter);
+
+// Checks to see if user is authenticated to access protected routes
+function isLoggedIn(req, res, next) {
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        // if they aren't redirect them to the home page
+        res.redirect('/login');
+    }
+}
 
 // Root Endpoint of App (Landing Page)
 app.get('/', (req, res) => {
@@ -92,49 +106,6 @@ app.get('/register', (req, res) => {
     res.render('register');
 });
 
-app.post('/register', (req, res) => {
-
-    const name = req.body.name;
-    const companyCode = req.body.code;
-    const email = req.body.email;
-    const password = req.body.password;
-
-    // Validation
-    req.checkBody('password', 'Password must be at least 5 characters').isLength({ min: 5 });
-    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-    req.checkBody('code', 'Invalid Company Code').equals('DIE3390');
-    let errors = req.validationErrors();
-
-    if (errors) {
-        console.log('yes')
-        console.log(errors);
-        res.render('register', {
-            errors,
-        });
-    } else {
-        const newUser = new User();
-        newUser.name = name;
-        newUser.companyCode = companyCode;
-        newUser.email = email;
-        newUser.password = newUser.generateHash(password);
-        User
-            .create(newUser);
-
-        req.flash('success_msg', 'Success, You may now login');
-        res.redirect('/login');
-    }
-});
-
-function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated()) {
-        return next();
-    } else {
-        // if they aren't redirect them to the home page
-        console.log('not logged in');
-        res.redirect('/login');
-    }
-}
 // Home Endpoint
 app.get('/home', isLoggedIn, (req, res) => {
     res.render('home');
