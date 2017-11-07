@@ -370,11 +370,11 @@ function displayVehicle(data) {
 function renderNewVehicle(vehicleData) {
     let vehicleImage;
     if (vehicleData.image === 'truck') {
-        vehicleImage = './images/truck_icon.png';
+        vehicleImage = 'https://www.knapheide.com/files/source/knapheide/products/Service-Bodies/Crane-Bodies/6108DLR-38J-Crane-Body-Ram-4500.png';
     } else if (vehicleData.image === 'van') {
-        vehicleImage = './images/van_icon.png';
+        vehicleImage = 'http://st.motortrend.com/uploads/sites/10/2016/10/2017-ram-promaster-2500-high-roof-cargo-van-angular-front.png?interpolation=lanczos-none&fit=around|300:199';
     } else {
-        vehicleImage = './images/building_icon.png';
+        vehicleImage = 'http://wfarm3.dataknet.com/static/resources/icons/set31/b4c44600.png';
     }
 
     $('#results').append(`<div class="item vehicle" id="${vehicleData.id}">
