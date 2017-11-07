@@ -125,7 +125,7 @@ function deleteItem(data) {
                 url: `/api/inventory/${data.id}`,
                 success: () => {
                     $(`#${data.id}`).remove();
-                    modal.style.display = 'none';
+                    hideEditItemModal();
                     removeItemAlert();
                 },
             });
