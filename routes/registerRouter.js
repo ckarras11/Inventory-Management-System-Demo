@@ -16,7 +16,6 @@ router.post('/', (req, res) => {
     const password = req.body.password;
 
     // Validation
-    console.log(`THIS IS THE CODE + ${CODE}`);
     req.checkBody('name', 'Name is required').notEmpty();
     req.checkBody('email', 'Email is required').notEmpty();
     req.checkBody('password', 'Password is required').notEmpty();
