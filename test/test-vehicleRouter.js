@@ -58,7 +58,7 @@ describe('Testing api/vehicle', function () {
                 .then(function (_res) {
                     res = _res;
                     res.should.have.status(200);
-                    return Vehicle.count()
+                    return Vehicle.count();
                 })
                 .then(function (count) {
                     res.body.length.should.equal(count);
@@ -75,9 +75,9 @@ describe('Testing api/vehicle', function () {
                     res.body.forEach(function (vehicle) {
                         vehicle.should.be.a('object');
                         vehicle.should.include.keys('vehicleName', 'id');
-                    })
-                    resVehicle = res.body[0]
-                    return Vehicle.findById(resVehicle.id)
+                    });
+                    resVehicle = res.body[0];
+                    return Vehicle.findById(resVehicle.id);
                 })
                 .then(function (vehicle) {
                     resVehicle.id.should.equal(vehicle.id);
@@ -98,7 +98,7 @@ describe('Testing api/vehicle', function () {
                     res.body.should.be.a('object');
                     res.body.should.include.keys('id', 'vehicleName');
                     res.body.id.should.not.be.null;
-                    return Vehicle.findById(res.body.id)
+                    return Vehicle.findById(res.body.id);
                 })
                 .then(function (vehicle) {
                     vehicle.vehicleName.should.equal(newVehicle.vehicleName);
@@ -112,14 +112,14 @@ describe('Testing api/vehicle', function () {
             return Vehicle
                 .findOne()
                 .then(function (vehicle) {
-                    updateData.id = vehicle.id
+                    updateData.id = vehicle.id;
                     return chai.request(app)
                         .put(`/api/vehicle/${updateData.id}`)
-                        .send(updateData)
+                        .send(updateData);
                 })
                 .then(function (res) {
                     res.should.have.status(204);
-                    return Vehicle.findById(updateData.id)
+                    return Vehicle.findById(updateData.id);
                 })
                 .then(function (vehicle) {
                     vehicle.vehicleName.should.equal(updateData.vehicleName);
@@ -134,8 +134,8 @@ describe('Testing api/vehicle', function () {
             return Vehicle
                 .findOne()
                 .then(function (_vehicle) {
-                    resVehicle = _vehicle
-                    return chai.request(app).delete(`/api/vehicle/${resVehicle.id}`)
+                    resVehicle = _vehicle;
+                    return chai.request(app).delete(`/api/vehicle/${resVehicle.id}`);
                 })
                 .then(function (res) {
                     res.should.have.status(204);
