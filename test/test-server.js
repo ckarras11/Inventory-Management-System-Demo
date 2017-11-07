@@ -52,7 +52,7 @@ describe('Testing', function () {
                 });
         });
     });
-    
+
     // HOME ENDPOINT
     describe('/home', function () {
         it('should return home.html', function () {
