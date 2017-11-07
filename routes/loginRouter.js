@@ -17,16 +17,13 @@ const jsonParser = bodyParser.json();
 passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true },
     function (req, email, password, done) {
         User.findOne({ email }, function (err, user) {
-            console.log(user);
             if (err) { return done(err); }
             if (!user) {
                 return done(null, false, { message: 'Incorrect username or password' });
             }
             if (!user.validPassword(password)) {
-                console.log('wrong password');
                 return done(null, false, { message: 'Incorrect username or password.' });
               }
-            console.log('you are logged in');
             return done(null, user);
         });
     }));
