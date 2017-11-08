@@ -22,7 +22,6 @@ router.post('/', (req, res) => {
     req.checkBody('code', 'Company Code is required').notEmpty();
     req.checkBody('password', 'Password must be between 5 and 72 characters long').isLength({ min: 5, max: 72 });
     req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-    req.checkBody('code', 'Invalid Company Code').equals(CODE);
     
     const errors = req.validationErrors();
 
