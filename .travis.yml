@@ -6,6 +6,6 @@ deploy:
   provider: heroku
   api_key:
     secure: ZfvlmrpFIzLjm3E/J/FL0uR98L3nYapNhUKKH7/0q47o/dw9eyUe4YXHb84+iAbRvaf+uoCHk3SJsU7FaukNb9H2p2TjtNuEB/568K16Vm8p8sxt6w9uqLr/0wjXZgXZsjXDLy9Xu+nSa22bBwyXOtGsf728/47QvqEycnx1ob3+FKxWWWQ/2z3kdtpKSCG0kDfOAXjMrt3JGFWun3qOBhERePCi75IPSYynjnn5yYAVzFuIcu9l4YsOlRPLEKGIzidkxTCXDcbKkRbGrYTLFCXlJyzgyXIqu09ELUcZcET+Rs5rZUXzUXgqqYxHfxFvyoipTTBPqZXtaAZzCMC1q+YSzXawa96IIn4URFFytsEU6rnHu16EeRTDh2b0gwL2oxnTY9VK9pepequOst468EavcaPFO9hchLr+jJ6lcSFMIJS6ET/acDEtGlOebYanm5mHZUvfEWZkscHdvvKayvizDvnJaItEZmDKTP1NhC3AcTNOMm59/ZcfUQ/Xei9fSg42tddYYw1/XoeO4+mcSc1OEfLVzmiERovrrMe3Rhtn1ErNfEuvwaEXv4glkylppyp52fzRv+TcMtC6XXW6NNZTbbrpIgCZDbyZIpVFfWBW5pm//RkKIwlo/BgQPCGawak1AUxvysydfyi/qRYcCjpLoNb5q/cIdjeb8iQvrDY=
-  app: inventory-mgmt-demo
+  app: inventory-mgmt-demo 
   on:
     repo: ckarras11/Inventory-Management-System-Demo
