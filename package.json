@@ -38,7 +38,7 @@
     "uglify-js": "^3.1.6"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --timeout 10000",
     "start": "node server.js"
   },
   "author": "Christopher Karras",
