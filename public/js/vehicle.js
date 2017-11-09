@@ -13,8 +13,12 @@ function getVehicles(callbackfn) {
 
 // Called initally on inventory.html body load to display all vehicles
 function displayVehicle(data) {
-    for (index in data) {
-        renderNewVehicle(data[index]);
+    if (data.length === 0 ) {
+        $('#results').append('<h2 class="noItems">There are no vehicles, use "Add" to create one</h2>');
+    } else {
+        for (index in data) {
+            renderNewVehicle(data[index]);
+        }
     }
 }
 
