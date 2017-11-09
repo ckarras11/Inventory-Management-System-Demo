@@ -18,6 +18,7 @@ router.post('/', (req, res) => {
     // Validation
     req.checkBody('name', 'Name is required').notEmpty();
     req.checkBody('email', 'Email is required').notEmpty();
+    req.checkBody('email', 'Must have a valid email').isEmail();
     req.checkBody('password', 'Password is required').notEmpty();
     req.checkBody('code', 'Company Code is required').notEmpty();
     req.checkBody('password', 'Password must be between 5 and 72 characters long').isLength({ min: 5, max: 72 });
