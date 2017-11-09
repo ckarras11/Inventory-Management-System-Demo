@@ -60,6 +60,15 @@ function addItem() {
     });
 }
 
+function clearForm() {
+    $('#item-image').val('');
+    $('#item-input').val('');
+    $('#partnumber-input').val('');
+    $('#price-input').val('');
+    $('#quantity-input').val('');
+    $('#reorder-input').val('');
+    $('#vehicle_id').val('');
+}
 // Click handler for selecting an inventory item, sends GET request for id
 function selectItem() {
     let currentItemId = '';

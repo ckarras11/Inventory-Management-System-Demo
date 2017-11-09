@@ -15,7 +15,7 @@ function formSubmitHandler(e) {
             url: '/api/vehicle',
             data,
             success: (data) => {
-                console.log(data);
+                $('.noItems').addClass('js-hide-display');
                 hideVehicleModal();
                 renderNewVehicle(data);
                 addVehicleAlert();
@@ -34,6 +34,7 @@ function formSubmitHandler(e) {
             success: (data) => {
                 $('.noItems').addClass('js-hide-display');
                 hideItemModal();
+                clearForm();
                 renderNewItem(data);
                 isVehicle = true;
                 addItemAlert();

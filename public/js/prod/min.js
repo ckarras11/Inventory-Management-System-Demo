@@ -52,7 +52,7 @@ function formSubmitHandler(e) {
             url: '/api/vehicle',
             data,
             success: (data) => {
-                console.log(data);
+                $('.noItems').addClass('js-hide-display');
                 hideVehicleModal();
                 renderNewVehicle(data);
                 addVehicleAlert();
@@ -71,6 +71,7 @@ function formSubmitHandler(e) {
             success: (data) => {
                 $('.noItems').addClass('js-hide-display');
                 hideItemModal();
+                clearForm();
                 renderNewItem(data);
                 isVehicle = true;
                 addItemAlert();
@@ -191,6 +192,15 @@ function addItem() {
     });
 }
 
+function clearForm() {
+    $('#item-image').val('');
+    $('#item-input').val('');
+    $('#partnumber-input').val('');
+    $('#price-input').val('');
+    $('#quantity-input').val('');
+    $('#reorder-input').val('');
+    $('#vehicle_id').val('');
+}
 // Click handler for selecting an inventory item, sends GET request for id
 function selectItem() {
     let currentItemId = '';
@@ -361,8 +371,12 @@ function getVehicles(callbackfn) {
 
 // Called initally on inventory.html body load to display all vehicles
 function displayVehicle(data) {
-    for (index in data) {
-        renderNewVehicle(data[index]);
+    if (data.length === 0 ) {
+        $('#results').append('<h2 class="noItems">There are no vehicles, use "Add" to create one</h2>');
+    } else {
+        for (index in data) {
+            renderNewVehicle(data[index]);
+        }
     }
 }
 
