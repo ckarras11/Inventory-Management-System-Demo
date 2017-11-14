@@ -7,10 +7,11 @@ function reorderReport(data) {
         }
     }
     itemsToReorder.sort(sortItem);
-    if (itemsToReorder.length === 0) {
-        $('#reorder-list').append('<div class="alert alert-info">No Items Below Reorder Point</div>');
+    if (itemsToReorder.length === 0) {    
+        $('.title').append('<div class="alert alert-info">No Items Below Minimum Amount</div>');
     } else {
-        itemsToReorder.forEach(item => $('#reorder-list').append(`<li>${item.item} Quantity: ${item.quantityOnHand}, Reorder Point: ${item.reorderPoint} (${item.vehicle_id})</li>`));
+        $('.report-title').removeClass('js-hide-display');
+        itemsToReorder.forEach(item => $('#reorder-list').append(`<li>${item.item}: Need (${item.reorderPoint-item.quantityOnHand}) to restock the ${item.vehicle_id}</li>`));
     }
 }
 
@@ -31,7 +32,7 @@ function sortItem(a, b) {
 // Event handler for report selection
 function runReport() {
     $('#reorder').click(() => {
-        $('.report').addClass('js-hide-display');
+        $('.report').addClass('js-hide-display');      
         getInventoryItems(reorderReport);
     });
 }
