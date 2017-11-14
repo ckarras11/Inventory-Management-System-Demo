@@ -9,6 +9,8 @@ h2
     color: white
     text-shadow: $outline
     font-family: $titleFont
+    overflow: hidden
+    text-overflow: ellipsis
     
 @media (min-width: 1000px)
     .login
@@ -53,6 +55,12 @@ h2
         border: solid black 1px
         border-radius: 5px
 
+input:focus
+    outline-color: $buttonColor
+
+input:-webkit-autofill
+    -webkit-box-shadow: 0 0 0 30px white inset
+    
 
 .button-container
     margin-left: 15px
@@ -71,5 +79,24 @@ h2
 
 .forgot
     text-align: center
+    a
+        text-decoration: none
+        color: #155877
 
+.demo-login
+    margin-top: 10px
+    padding: 5px
+    display: flex
+    justify-content: center
+    align-items: center
+    color: #155877
+    flex-direction: column
 
+    h4
+        color: white
+        text-shadow: $outline
+        margin-bottom: 5px
+        text-align: center
+
+.test-creds
+    margin: 5px
