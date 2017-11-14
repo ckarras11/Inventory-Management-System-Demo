@@ -34,12 +34,14 @@ function renderNewVehicle(vehicleData) {
     }
 
     $('#results').append(`<div class="item vehicle" id="${vehicleData.id}">
+                            <div class="deleteVehicle">
+                                <span class="delete">&times;</span>
+                            </div>
                             <div class="picture">
                                 <img src="${vehicleImage}">
                             </div>  
-                            <p>${vehicleData.vehicleName}</p>
-                            <div class="edit-vehicle">
-                                <span class="delete">&times;</span>
+                            <div class="name-container">
+                                <p>${vehicleData.vehicleName}</p>
                                 <span class="edit" data-vehicle="${vehicleData.vehicleName}">&#9998;</span>
                             </div>
                         </div>`);
