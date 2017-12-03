@@ -1,7 +1,7 @@
 # Inventory-Management-System
 
 ## Overview
-This application was designed for a small company to use as an inventory management solution.  The user is able to create multiple inventories across different vehicles/locations.  The user is also able to run a report across all vehicles to create a master reorder list.  The direct link for the app is [here!](https://inventory-mgmt.herokuapp.com/)
+This application was designed for a small company to use as an inventory management solution.  The user is able to create multiple inventories across different vehicles/locations.  The user is also able to run a report across all vehicles to create a master reorder list.  The direct link for the app is [here!](https://inventory-mgmt-demo.herokuapp.com/)
 
 ## Landing Page
 The landing page is there to direct a user to either a register page (if the user does not have an account) or a login page (if the user is already registered)
