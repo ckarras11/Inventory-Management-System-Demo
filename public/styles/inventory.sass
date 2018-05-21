@@ -1,9 +1,6 @@
 .vehicle
     cursor: pointer
 
-.vehicle:hover
-    background-color:  #dadee5
-
 .deleteVehicle
     display: flex
     justify-content: space-around
@@ -27,15 +24,25 @@
 
 .item
     cursor: pointer
-    background-color: #DADADA
+    background-color: white
     display: flex
     justify-content: center
     align-items: center
     flex-direction: column
+    border: solid rgb(220,220,220) 1px
+    border-radius: 3px
+    height: 150px
+    text-align: center
 
 .item:hover
     border: solid $buttonColor 4px
 
+input
+    width: 100%
+    margin-bottom: 15px
+    padding: 5px
+    border: solid black 1px
+    border-radius: 3px
 .name-container
     display: flex
     flex-direction: row
@@ -43,26 +50,18 @@
 
 @media (min-width: 500px)
     .item
-        border: solid black 1px
-        border-radius: 5px
         width: 20%
         margin-left: 4%
         margin-top: 4%
-        height: 150px
-        text-align: center
     .item-form
         input
             width: 60%
 
 @media (max-width: 500px)
     .item
-        border: solid black 1px
-        border-radius: 5px
         width: 35%
         margin-left: 10%
         margin-top: 10%
-        height: 150px
-        text-align: center
     .width-50
         width: 80% !important
     .sidebar
@@ -111,11 +110,11 @@
     background-color: rgba(0,0,0,0.4)
 
 .modal-content
-    background-color: $formGrey
+    background-color: rgb(241,242,247)
     margin: 15% auto
     padding: 20px
     border: solid black 1px
-    border-radius: 5px
+    border-radius: 3px
 
 .width-50
     width: 50%
@@ -146,17 +145,20 @@
     margin-bottom: 15px
     padding: 5px
     border: solid black 1px
-    border-radius: 5px
+    border-radius: 3px
     background-color: $buttonColor
     color: white
     font-size: 18px
+    width: 100px
 
 .item-form
     display: flex
+    justify-content: center
     flex-direction: column
-    align-items: flex-start
+    align-items: center
     h2
         margin: auto
+        margin-bottom: 5px
     label
         margin-bottom: 10px
     

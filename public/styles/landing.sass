@@ -1,5 +1,5 @@
 .landing-header
-    background: linear-gradient(rgba(0,0,0,1),rgba(255,0,0,.2)), url('https://www.provisioneronline.com/ext/resources/Issues/2016/August/np0816_22_spareparts_img1.jpg')
+    background: linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)), url('../images/architecture-bridge-buildings-374018.jpg')
     background-size: cover
     height: 100vh
     display: flex
@@ -11,7 +11,6 @@
     font-family: $titleFont
     color: white
     text-align: center
-    //margin-top: 25%
     text-shadow: $outline
     padding-left: 5px
     padding-right: 5px
@@ -25,25 +24,22 @@
 .enterApp
     display: flex
     justify-content: center
-    ul
-        display: flex
-        flex-direction: 
-        padding-left: 0px
-        li
-            margin: 15px
-            list-style: none
-            text-decoration: none
-            border: solid black 1px
-            padding-left: 10px
-            padding-right: 10px
-            border-radius: 5px
-            width: 70px
-            text-align: center
-            background-color: $buttonColor
-            a
-                text-decoration: none  
-                color: white
+    a
+        margin: 15px
+        border: solid transparent 1px
+        border-radius: 3px
+        width: 70px
+        background-color: $buttonColor
+        text-decoration: none  
+        color: white
+        text-align: center
+        padding-left: 10px
+        padding-right: 10px
+        padding-top: 5px
+        padding-bottom: 5px
 
+    a:active
+            transform: translateY(2px)
 .landing-copyright
     color: white
     position: absolute
